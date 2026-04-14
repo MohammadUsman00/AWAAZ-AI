@@ -20,7 +20,7 @@
 
 <br />
 
-[Problem statement](#-problem-statement) · [Solution](#-what-awaaz-ai-does) · [Tech stack](#-tech-stack) · [UI overview](#-interface-overview) · [Run locally](#-run-locally) · [Structure](#-project-structure)
+[Problem statement](#problem-statement) · [Implemented solution](#implemented-solution) · [Tech stack](#tech-stack) · [UI gallery](#ui-gallery) · [Run locally](#run-locally) · [Structure](#project-structure)
 
 </div>
 
@@ -28,27 +28,30 @@
 
 ## Problem statement
 
-India has **hundreds of thousands of villages** and deep-rooted gaps between citizens and the offices meant to serve them. In practice:
+Citizens in **rural India**—especially in regions where **Kashmiri, Urdu, and Hindi** are primary languages—face a structural gap between lived problems and **documented, traceable** grievances. Government systems and portals are often **English-first**, form-heavy, and department-specific. That creates friction for people who lack time, digital literacy, or familiarity with official vocabulary.
 
-| Challenge | Why it matters |
-|-----------|----------------|
-| **Language & literacy** | Many grievances are voiced in **Kashmiri, Urdu, or Hindi**, while official portals and forms are often **English-first** or hard to navigate. |
-| **Access & trust** | Filing a “proper” complaint can require knowing **which department**, **which format**, and **which portal** — a barrier for people without time, networks, or legal vocabulary. |
-| **Lost signal** | Issues that never become **documented, traceable complaints** are invisible to accountability and planning — so **corruption and neglect stay cyclic**. |
+| Challenge | Impact |
+|-----------|--------|
+| **Language & literacy** | Many issues are expressed in regional languages, while **official channels** remain hard to navigate or translate into. |
+| **Process opacity** | Filing a “proper” complaint can require knowing **which department**, **which format**, and **which channel**—a barrier without networks or legal language. |
+| **Invisible harm** | Problems that **never become structured records** are **lost to accountability** and planning—so patterns of **neglect** are harder to challenge with evidence. |
 
-**Awaaz AI** is framed as a response to that gap: **lower the cost of turning a real story into a formal, trackable civic record** — starting with language-friendly input and AI-assisted structuring, not replacing courts or official processes.
+**Awaaz AI** addresses this **documentation gap**: it does **not** replace courts or government portals; it **lowers the cost** of turning a plain-language account into a **structured, trackable** civic record that can be **submitted, followed up, and cited**.
 
 ---
 
-## What Awaaz AI does
+## Implemented solution
 
-In this repository, **Awaaz AI** is implemented as a **single-page web experience** that:
+This repository ships a **full-stack demo** that matches that intent:
 
-- Presents a **clear narrative** (problem → how it works → impact → demo).
-- Offers an **interactive demo**: users describe a complaint (with **English / اردو / हिंदी** samples), and **Google Gemini** returns structured JSON used to fill **issue type, department, severity, submission hint, bilingual letters, and a tracking-style ID**.
-- Emphasizes **design** aligned with the product story: warm **sand / ink / saffron / emerald** palette, **Playfair Display**, **DM Sans**, **Noto Nastaliq Urdu**, responsive layout, and motion on the hero demo card.
+| Layer | What it does |
+|--------|----------------|
+| **Experience** | A **single-page** site with narrative sections (problem → how it works → impact → demo), **responsive** layout, and **multilingual** UI cues (English / اردو / हिंदी). |
+| **Interactive demo** | Users describe a complaint; the **Node.js** backend calls **Google Gemini** with a **server-only** API key and returns **structured JSON** (issue type, department, severity, submission hints, draft letters) plus a **tracking ID**. |
+| **Persistence** | Analyses are appended to **`data/complaints.json`** (created at runtime) for **demo traceability**—not a production-grade government backend. |
+| **Design** | Implemented **sand / ink / saffron / emerald** palette, **Playfair Display**, **DM Sans**, **Noto Nastaliq Urdu**, hero animation, and **sticky** navigation with mobile menu. |
 
-> **Scope:** This repo is a **front-end + client-side API call** demo. It does **not** include a production backend, database, or real submission to government systems unless you add them.
+> **Honest scope:** This is a **concept demo** with a **JSON file store** and **rate-limited** API. Hardening (auth, retention, real submission channels) is **out of scope** unless you extend it.
 
 ---
 
@@ -60,8 +63,10 @@ In this repository, **Awaaz AI** is implemented as a **single-page web experienc
 | **Styling** | Modular CSS | Design tokens (`css/variables.css`), no Tailwind/Bootstrap |
 | **Fonts** | Google Fonts | Playfair Display, DM Sans, Noto Nastaliq Urdu |
 | **Script** | ES modules | `import` / `export`; entry `js/main.js` |
-| **AI** | Gemini `generateContent` | Config in `js/config.js` (`gemini-2.0-flash`) |
-| **Tooling** | `serve` (via npm) | Local static server for ES modules |
+| **AI** | Google Gemini (`generateContent`) | Server-side only — `server/lib/gemini.js`, env `GEMINI_API_KEY` |
+| **Backend** | Node.js + Express | `server/index.js` — REST API, static files, rate limit |
+| **Persistence** | JSON file store | `data/complaints.json` (created on first analyze) |
+| **Tooling** | `npm run dev` / `npm start` | Single process for UI + API |
 
 <p align="center">
   <img src="https://img.shields.io/badge/Playfair%20Display-heading-0e0c0a?style=for-the-badge" alt="Playfair Display" />
@@ -71,19 +76,19 @@ In this repository, **Awaaz AI** is implemented as a **single-page web experienc
 
 ---
 
-## Interface overview
+## UI gallery
 
-<p align="center">
-  <img src="assets/ui-preview-mockup.png" alt="Awaaz AI interface mockup — hero, demo card, and complaint panel" width="92%" />
-</p>
+Screenshots below are **captured from the running app** (local server, Chromium)—the same layout and styles as in `index.html` and `css/`.
 
-<p align="center"><em>PNG preview assets in <code>assets/</code> — swap filenames if you add new screenshots.</em></p>
+| Landing & hero | Interactive demo (complaint input + results) |
+|:---:|:---:|
+| <img src="assets/ui-landing.png" alt="Awaaz AI — landing hero with nav, headline, stats, and animated demo card" width="100%" /> | <img src="assets/ui-interactive-demo.png" alt="Awaaz AI — interactive demo with language toggles and complaint textarea" width="100%" /> |
 
-**UI highlights (implemented in code):**
+| How it works (six steps) |
+|:---:|
+| <img src="assets/ui-how-it-works.png" alt="Awaaz AI — How it works section with six steps from voice to complaint" width="100%" /> |
 
-- Sticky **navigation** with mobile menu  
-- **Hero** with animated demo card (wave bars, staged steps, tracking badge)  
-- **Problem strip**, **How it works** (6 steps), **Live demo**, **Impact**, **Corruption map** (illustrative), **CTA**, **Footer**
+**Implemented in code:** sticky **navigation**; **hero** with animated demo card; **problem strip**; **How it works** grid; **Live demo** with **English / اردو / हिंदी** samples; **Impact**, **corruption map** (illustrative), **CTA**, **footer**.
 
 ---
 
@@ -93,42 +98,51 @@ In this repository, **Awaaz AI** is implemented as a **single-page web experienc
 flowchart LR
   subgraph client [Browser]
     HTML[index.html]
-    CSS[css/*.css]
     JS[js/main.js]
   end
-  subgraph modules [ES modules]
-    UI[js/ui.js]
-    AN[js/analyze.js]
-    CFG[js/config.js]
+  subgraph server [Node server]
+    API["/api/analyze"]
+    STORE[(data/complaints.json)]
   end
   HTML --> JS
-  JS --> UI
-  JS --> AN
-  AN --> CFG
-  AN -->|HTTPS POST generateContent| GEMINI[(Google Gemini API)]
+  JS -->|POST JSON| API
+  API -->|generateContent + key| GEMINI[(Google Gemini)]
+  API --> STORE
 ```
 
-> **Security:** Avoid exposing API keys in the client. Use a **proxy** or **backend** that attaches credentials, or restrict keys by domain/referrer per Google’s policies.
+> **Security:** The **Gemini API key** lives only on the server (`GEMINI_API_KEY` in `.env`). The browser calls **`/api/analyze`** on the same origin.
 
 ---
 
-## Run locally
+## Run locally (full stack — recommended)
 
-ES modules require a **local HTTP server** (not `file://`).
+1. **Install dependencies**
 
 ```bash
 cd AWAAZ-AI
-npm install   # optional; scripts use npx
+npm install
+```
+
+2. **Configure Gemini** — copy `.env.example` to `.env` and set your key:
+
+```bash
+copy .env.example .env
+# Edit .env: set GEMINI_API_KEY=...
+```
+
+3. **Start the backend** (serves the static UI + API on one port):
+
+```bash
 npm run dev
 ```
 
-Open **http://localhost:3000** (or the URL printed by `serve`).
+Open **http://localhost:8080** (default `PORT`; override in `.env`).
 
-**Alternative:**
-
-```bash
-npx --yes serve -l 3000 .
-```
+| Script | Purpose |
+|--------|---------|
+| `npm run dev` | Server with **watch** reload (`node --watch`) |
+| `npm start` | Production-style run (no watch) |
+| `npm run serve-static` | **Static files only** on port 3000 — `POST /api/analyze` will **not** work unless you point `window.__AWAAZ_API_BASE__` at a running API |
 
 ---
 
@@ -138,48 +152,53 @@ npx --yes serve -l 3000 .
 AWAAZ-AI/
 ├── README.md
 ├── package.json
+├── .env.example
 ├── index.html
 ├── assets/
-│   ├── readme-banner.png      # README header (PNG)
-│   └── ui-preview-mockup.png  # UI preview for docs (PNG)
+│   ├── readme-banner.png
+│   ├── ui-landing.png
+│   ├── ui-interactive-demo.png
+│   └── ui-how-it-works.png
+├── server/
+│   ├── index.js                 # Express: API + static SPA
+│   └── lib/
+│       ├── gemini.js             # Server-side Gemini generateContent
+│       └── store.js             # JSON persistence (data/complaints.json)
+├── data/                        # Created at runtime (gitignored)
+│   └── complaints.json
 ├── css/
-│   ├── main.css                 # @imports
-│   ├── variables.css
-│   ├── animations.css
-│   ├── base.css
-│   ├── nav.css
-│   ├── hero.css
-│   ├── sections.css
-│   ├── demo.css
-│   ├── impact.css
-│   ├── map.css
-│   ├── cta-footer.css
-│   └── ui-components.css
+│   └── …
 └── js/
-    ├── config.js                # Gemini endpoint + model
-    ├── samples.js               # Demo complaint samples
-    ├── ui.js                    # Language, tabs, copy
-    ├── analyze.js               # fetch + parse + UI update
-    └── main.js                  # Bootstrap + event wiring
+    ├── config.js                # API base URL (empty = same origin)
+    ├── samples.js
+    ├── ui.js
+    ├── analyze.js               # POST /api/analyze
+    └── main.js
 ```
 
 ---
 
-## Configure Gemini
+## Backend API
 
-Edit **`js/config.js`**:
+| Method | Path | Description |
+|--------|------|-------------|
+| `GET` | `/api/health` | Liveness + `geminiConfigured` flag |
+| `POST` | `/api/analyze` | Body: `{ "text": string, "language"?: string }` → `{ trackingId, analysis }` |
+| `GET` | `/api/complaints?limit=&offset=` | Summary list (optional **`ADMIN_TOKEN`** via `Authorization: Bearer …`) |
+| `GET` | `/api/complaints/:trackingId` | Full stored analysis for a tracking ID |
 
-- **`url`** — full `:generateContent` URL (or your **proxy** URL).
-- **`model`** — must match the model segment in the path if you change it.
+Complaints are stored under **`data/complaints.json`** (cap configurable via `COMPLAINTS_MAX_STORED`). **Do not commit real citizen data** — treat as a demo store; harden retention and access for production.
 
-For production, prefer **server-side** or **proxy** calls so keys are not shipped in static assets.
+**Environment:** See **`.env.example`** (`GEMINI_API_KEY`, `PORT`, `GEMINI_MODEL`, `ADMIN_TOKEN`, rate limits).
+
+**Split frontend:** serve the static folder elsewhere and set `window.__AWAAZ_API_BASE__ = 'https://your-api-host'` before loading `main.js`.
 
 ---
 
 ## Roadmap (ideas)
 
 - [ ] Voice capture + speech-to-text pipeline  
-- [ ] Backend persistence and user-safe anonymity model  
+- [x] Backend proxy + persistence (basic JSON store)  
 - [ ] Real submission hooks (email, portal links, PDF export)  
 - [ ] Replace illustrative map data with live aggregates  
 

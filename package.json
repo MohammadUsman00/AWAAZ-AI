@@ -1,9 +1,17 @@
 {
   "name": "awaaz-ai",
   "private": true,
-  "description": "Awaaz AI — civic complaint platform (static site + ES modules)",
+  "type": "module",
+  "description": "Awaaz AI — civic complaint platform (static UI + Node backend + Gemini)",
   "scripts": {
-    "dev": "npx --yes serve -l 3000 .",
-    "start": "npx --yes serve -l 3000 ."
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "serve-static": "npx --yes serve -l 3000 ."
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-rate-limit": "^7.4.0"
   }
 }

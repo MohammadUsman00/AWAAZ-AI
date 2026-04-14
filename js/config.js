@@ -1,7 +1,17 @@
-/** Google Gemini API (`generateContent`) — API key is usually via `?key=`; use a proxy that injects auth if calling from the browser without exposing keys. */
+/**
+ * API base URL. Empty = same origin (recommended when using `npm start` server).
+ * For split deploys, set before loading main.js: window.__AWAAZ_API_BASE__ = 'https://api.example.com'
+ */
+function apiBase() {
+  if (typeof window !== 'undefined' && window.__AWAAZ_API_BASE__ != null && window.__AWAAZ_API_BASE__ !== '') {
+    return String(window.__AWAAZ_API_BASE__).replace(/\/$/, '');
+  }
+  return '';
+}
+
 export const API = {
-  /** Full URL to `:generateContent` (includes model name in path). */
-  url: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
-  model: 'gemini-2.0-flash',
-  maxTokens: 1000,
+  get baseUrl() {
+    return apiBase();
+  },
+  analyzePath: '/api/analyze',
 };

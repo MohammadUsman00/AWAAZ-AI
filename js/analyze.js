@@ -9,29 +9,6 @@ const LOADING_MESSAGES = [
   'Preparing Urdu translation...',
 ];
 
-export function genTrackingId() {
-  const n = Math.floor(Math.random() * 90000) + 10000;
-  return `AWZ-2026-0${n}`;
-}
-
-function parseModelJson(raw) {
-  const clean = raw.replace(/```json|```/g, '').trim();
-  try {
-    return JSON.parse(clean);
-  } catch (e) {
-    const m = clean.match(/\{[\s\S]*\}/);
-    if (!m) throw e;
-    return JSON.parse(m[0]);
-  }
-}
-
-/** Extract text from Gemini `generateContent` response. */
-function geminiResponseText(data) {
-  const parts = data.candidates?.[0]?.content?.parts;
-  if (!parts?.length) return '';
-  return parts.map((p) => p.text || '').join('');
-}
-
 export async function analyzeComplaint() {
   const text = document.getElementById('complaintText').value.trim();
   if (!text) {
@@ -56,67 +33,43 @@ export async function analyzeComplaint() {
     lt.textContent = LOADING_MESSAGES[mi];
   }, 1200);
 
-  const prompt = `You are Awaaz AI, a civic complaint assistant for rural India. Analyze the following complaint and respond ONLY with a JSON object (no markdown, no extra text).
-Complaint: ${JSON.stringify(text)}
-Respond with valid JSON only, using exactly these keys (double-quoted strings):
-{
-  "issue_type": "short category",
-  "department": "exact Indian govt dept with district",
-  "severity": "low|medium|high|critical",
-  "submit_to": "specific portal or office",
-  "english_letter": "150-200 word formal complaint letter starting with 'To, The [Authority],' citing issue + relevant Indian laws/RTI",
-  "urdu_letter": "100-150 word Urdu formal letter",
-  "summary": "one line English summary"
-}`;
+  const url = `${API.baseUrl}${API.analyzePath}`;
 
   try {
-    const resp = await fetch(API.url, {
+    const resp = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        contents: [
-          {
-            role: 'user',
-            parts: [{ text: prompt }],
-          },
-        ],
-        generationConfig: {
-          maxOutputTokens: API.maxTokens,
-          temperature: 0.4,
-        },
+        text,
+        language: state.currentLang,
       }),
     });
 
-    const data = await resp.json();
+    const payload = await resp.json().catch(() => ({}));
     clearInterval(msgInterval);
+
     if (!resp.ok) {
-      const errMsg =
-        (data && data.error && (data.error.message || data.error.status)) ||
-        resp.statusText ||
-        'Request failed';
+      const errMsg = payload.error || resp.statusText || 'Request failed';
       throw new Error(errMsg);
     }
 
-    const raw = geminiResponseText(data);
-    if (!raw.trim()) {
-      throw new Error('Empty response from API');
+    const { trackingId, analysis } = payload;
+    if (!analysis) {
+      throw new Error('Invalid response from server');
     }
 
-    const parsed = parseModelJson(raw);
+    state.englishLetter = analysis.english_letter || '';
+    state.urduLetter = analysis.urdu_letter || '';
 
-    state.englishLetter = parsed.english_letter || '';
-    state.urduLetter = parsed.urdu_letter || '';
-    const tid = genTrackingId();
+    document.getElementById('issueType').textContent = analysis.issue_type || '—';
+    document.getElementById('department').textContent = analysis.department || '—';
+    document.getElementById('submitTo').textContent = analysis.submit_to || '—';
+    document.getElementById('trackingId').textContent = trackingId || '—';
+    document.getElementById('trackingIdMain').textContent = trackingId || '—';
+    document.getElementById('resultTitle').textContent = analysis.summary || 'Complaint Analyzed';
+    document.getElementById('resultBadge').textContent = (analysis.severity || 'NEW').toUpperCase();
 
-    document.getElementById('issueType').textContent = parsed.issue_type || '—';
-    document.getElementById('department').textContent = parsed.department || '—';
-    document.getElementById('submitTo').textContent = parsed.submit_to || '—';
-    document.getElementById('trackingId').textContent = tid;
-    document.getElementById('trackingIdMain').textContent = tid;
-    document.getElementById('resultTitle').textContent = parsed.summary || 'Complaint Analyzed';
-    document.getElementById('resultBadge').textContent = (parsed.severity || 'NEW').toUpperCase();
-
-    const sev = (parsed.severity || 'medium').toLowerCase();
+    const sev = (analysis.severity || 'medium').toLowerCase();
     const sevEl = document.getElementById('severity');
     sevEl.innerHTML = `<span class="badge-severity ${sev}">${sev.toUpperCase()}</span>`;
 
@@ -128,8 +81,12 @@ Respond with valid JSON only, using exactly these keys (double-quoted strings):
     lo.classList.remove('active');
     const phEl = document.getElementById('outputPlaceholder');
     phEl.style.display = 'flex';
-    phEl.innerHTML =
-      '<div class="output-placeholder-icon">⚠️</div><div>Error analyzing complaint. Please try again.</div>';
+    const detail = e && e.message ? String(e.message) : '';
+    phEl.innerHTML = `<div class="output-placeholder-icon">⚠️</div><div>Error analyzing complaint. Please try again.</div><div style="font-size:12px; color: var(--ink3); max-width: 280px">${escapeHtml(detail)}</div>`;
   }
   btn.disabled = false;
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 }
