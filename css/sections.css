@@ -1,0 +1,155 @@
+section {
+  padding: clamp(3rem, 6vw, 5rem) clamp(1rem, 4vw, 3rem);
+}
+
+.section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--saffron);
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+  margin-bottom: 1rem;
+}
+
+.section-desc {
+  font-size: 1.05rem;
+  color: var(--ink2);
+  line-height: 1.7;
+  max-width: 600px;
+}
+
+.problem-strip {
+  background: var(--ink);
+  padding: 3rem clamp(1rem, 4vw, 3rem);
+  overflow: hidden;
+}
+
+.problem-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+@media (max-width: 900px) {
+  .problem-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .problem-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.problem-item {
+  color: var(--white);
+}
+
+.problem-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--saffron);
+}
+
+.problem-label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.how-section {
+  background: var(--white);
+}
+
+.flow-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0;
+  margin-top: 3rem;
+  position: relative;
+}
+
+.flow-step {
+  padding: 2rem 1.5rem;
+  border-right: 1px solid var(--border);
+  position: relative;
+  transition: background 0.2s;
+}
+
+.flow-step:last-child {
+  border-right: none;
+}
+
+.flow-step:hover {
+  background: var(--sand);
+}
+
+.flow-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--sand3);
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.flow-icon {
+  font-size: 1.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.flow-title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.flow-desc {
+  font-size: 13px;
+  color: var(--ink3);
+  line-height: 1.6;
+}
+
+.flow-arrow {
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  width: 24px;
+  height: 24px;
+  background: var(--saffron);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 11px;
+  z-index: 1;
+  transform: translateY(-50%);
+}
+
+.flow-step:last-child .flow-arrow {
+  display: none;
+}

@@ -1,0 +1,118 @@
+.map-section {
+  background: var(--ink);
+  padding: 4rem clamp(1rem, 4vw, 3rem);
+}
+
+.map-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.map-section .section-tag {
+  color: var(--saffron2);
+}
+
+.map-section .section-title {
+  color: var(--white);
+}
+
+.map-section .section-desc {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.corruption-map {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 600px) {
+  .corruption-map {
+    grid-template-columns: 1fr;
+  }
+}
+
+.map-chart-title {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bar-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.bar-track {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transform-origin: left center;
+  animation: barGrow 1.4s ease forwards;
+}
+
+.bar-pct {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 11px;
+  width: 32px;
+  text-align: right;
+}
+
+.issue-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.issue-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+}
+
+.issue-name {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 13px;
+}
+
+.issue-count {
+  background: rgba(232, 98, 26, 0.2);
+  color: var(--saffron2);
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: monospace;
+}

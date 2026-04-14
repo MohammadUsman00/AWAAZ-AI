@@ -1,0 +1,68 @@
+.impact-section {
+  background: var(--white);
+}
+
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.impact-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  transition:
+    box-shadow 0.2s,
+    transform 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.impact-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+
+.impact-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+
+.impact-card.saffron::before {
+  background: var(--saffron);
+}
+
+.impact-card.emerald::before {
+  background: var(--emerald2);
+}
+
+.impact-card.gold::before {
+  background: var(--gold);
+}
+
+.impact-card.crimson::before {
+  background: var(--crimson);
+}
+
+.impact-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.impact-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+
+.impact-desc {
+  font-size: 13px;
+  color: var(--ink3);
+  line-height: 1.6;
+}

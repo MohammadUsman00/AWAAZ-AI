@@ -1,0 +1,9 @@
+{
+  "name": "awaaz-ai",
+  "private": true,
+  "description": "Awaaz AI — civic complaint platform (static site + ES modules)",
+  "scripts": {
+    "dev": "npx --yes serve -l 3000 .",
+    "start": "npx --yes serve -l 3000 ."
+  }
+}

@@ -1,0 +1,72 @@
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-anim {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.6);
+    opacity: 0.5;
+  }
+}
+
+@keyframes waveBounce {
+  from {
+    height: 4px;
+    opacity: 0.4;
+  }
+  to {
+    height: var(--h, 20px);
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes mic-pulse {
+  0%,
+  100% {
+    box-shadow: 0 4px 20px rgba(232, 98, 26, 0.35);
+  }
+  50% {
+    box-shadow: 0 4px 40px rgba(232, 98, 26, 0.7);
+    transform: scale(1.05);
+  }
+}
+
+@keyframes barGrow {
+  from {
+    transform: scaleX(0);
+    opacity: 0.65;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
