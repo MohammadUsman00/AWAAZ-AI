@@ -1,5 +1,7 @@
 import { API } from './config.js';
 import { state, showTab, PLACEHOLDER_HTML } from './ui.js';
+import { getSessionId } from './session.js';
+import { setLastTrackingId } from './history.js';
 
 const LOADING_MESSAGES = [
   'Transcribing your complaint...',
@@ -34,15 +36,21 @@ export async function analyzeComplaint() {
   }, 1200);
 
   const url = `${API.baseUrl}${API.analyzePath}`;
+  const emailEl = document.getElementById('complaintEmail');
+  const email = emailEl && emailEl.value ? String(emailEl.value).trim() : '';
 
   try {
+    const body = {
+      text,
+      language: state.currentLang,
+      sessionId: getSessionId(),
+    };
+    if (email) body.email = email;
+
     const resp = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        text,
-        language: state.currentLang,
-      }),
+      body: JSON.stringify(body),
     });
 
     const payload = await resp.json().catch(() => ({}));
@@ -56,6 +64,13 @@ export async function analyzeComplaint() {
     const { trackingId, analysis } = payload;
     if (!analysis) {
       throw new Error('Invalid response from server');
+    }
+
+    setLastTrackingId(trackingId);
+    const pdfLink = document.getElementById('pdfDownloadBtn');
+    if (pdfLink && trackingId) {
+      pdfLink.href = `${API.baseUrl}/api/complaints/${encodeURIComponent(trackingId)}/pdf`;
+      pdfLink.style.display = 'inline-flex';
     }
 
     state.englishLetter = analysis.english_letter || '';

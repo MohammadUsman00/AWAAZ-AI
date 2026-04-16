@@ -21,6 +21,8 @@ export function setLang(lang, btn) {
       ? 'اپنی شکایت یہاں لکھیں...'
       : lang === 'hi'
         ? 'अपनी शिकायत यहाँ लिखें...'
+        : lang === 'ks'
+          ? 'کٔرۍ یتھ تہِ پَنٕنۍ شِکایت لِکھِو...'
         : "Describe your issue... e.g. 'The new road built in our village broke after first rain, contractor has disappeared with the money'";
   window.dispatchEvent(new CustomEvent('awaaz:lang'));
 }
