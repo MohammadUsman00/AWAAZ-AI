@@ -168,7 +168,7 @@
             <div class="flow-num">02</div>
             <div class="flow-icon">🧠</div>
             <div class="flow-title">AI transcribes</div>
-            <div class="flow-desc">Whisper API converts your speech to text with regional language understanding.</div>
+            <div class="flow-desc">Your voice is turned into text in the browser (Web Speech API) — or type instead.</div>
             <div class="flow-arrow">→</div>
           </div>
           <div class="flow-step">
@@ -207,8 +207,8 @@
         <div class="section-tag">Interactive Demo</div>
         <div class="section-title">Try Awaaz AI now</div>
         <p class="section-desc">
-          Type your complaint in English, Urdu, or Kashmiri. Our AI will analyze it, identify the department, and
-          generate a formal legal letter.
+          Type or use the microphone to speak your complaint in English, Urdu, or Hindi. Our AI will analyze it,
+          identify the department, and generate a formal legal letter.
         </p>
 
         <div class="demo-container">
@@ -235,6 +235,13 @@
                   placeholder="Describe your issue... e.g. 'The new road built in our village broke after first rain, contractor has disappeared with the money'"
                   rows="5"
                 ></textarea>
+
+                <div class="voice-row">
+                  <button type="button" class="mic-btn" id="micBtn" aria-pressed="false" aria-label="Speak your complaint">
+                    🎙️
+                  </button>
+                  <p class="voice-status" id="voiceStatus">Loading voice…</p>
+                </div>
 
                 <div class="sample-btns">
                   <button type="button" class="sample-btn" data-sample="road">🛣️ Broken Road</button>

@@ -22,6 +22,7 @@ export function setLang(lang, btn) {
       : lang === 'hi'
         ? 'अपनी शिकायत यहाँ लिखें...'
         : "Describe your issue... e.g. 'The new road built in our village broke after first rain, contractor has disappeared with the money'";
+  window.dispatchEvent(new CustomEvent('awaaz:lang'));
 }
 
 export function loadSample(type) {

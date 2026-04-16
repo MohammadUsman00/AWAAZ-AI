@@ -149,9 +149,21 @@ app.use((req, res, next) => {
   res.sendFile(path.join(ROOT, 'index.html'));
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Awaaz AI backend http://localhost:${PORT}`);
   if (!process.env.GEMINI_API_KEY) {
     console.warn('Warning: GEMINI_API_KEY is not set. Set it in .env for /api/analyze.');
   }
+});
+
+server.on('error', (err) => {
+  if (err && err.code === 'EADDRINUSE') {
+    console.error(
+      `[EADDRINUSE] Port ${PORT} is already in use. Either stop the other process ` +
+        `(Windows: netstat -ano | findstr :${PORT} then taskkill /PID <pid> /F) ` +
+        `or set a different PORT in .env (e.g. PORT=8081).`
+    );
+    process.exit(1);
+  }
+  throw err;
 });

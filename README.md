@@ -22,6 +22,8 @@
 
 [Problem statement](#problem-statement) · [Implemented solution](#implemented-solution) · [Tech stack](#tech-stack) · [UI gallery](#ui-gallery) · [Run locally](#run-locally) · [Structure](#project-structure)
 
+**[Full platform specification — everything built vs missing →](docs/PLATFORM-SPEC.md)**
+
 </div>
 
 ---
@@ -47,11 +49,13 @@ This repository ships a **full-stack demo** that matches that intent:
 | Layer | What it does |
 |--------|----------------|
 | **Experience** | A **single-page** site with narrative sections (problem → how it works → impact → demo), **responsive** layout, and **multilingual** UI cues (English / اردو / हिंदी). |
-| **Interactive demo** | Users describe a complaint; the **Node.js** backend calls **Google Gemini** with a **server-only** API key and returns **structured JSON** (issue type, department, severity, submission hints, draft letters) plus a **tracking ID**. |
+| **Interactive demo** | Users **type or use the mic** (Web Speech API in Chrome/Edge); the **Node.js** backend calls **Google Gemini** with a **server-only** API key and returns **structured JSON** (issue type, department, severity, submission hints, draft letters) plus a **tracking ID**. |
 | **Persistence** | Analyses are appended to **`data/complaints.json`** (created at runtime) for **demo traceability**—not a production-grade government backend. |
 | **Design** | Implemented **sand / ink / saffron / emerald** palette, **Playfair Display**, **DM Sans**, **Noto Nastaliq Urdu**, hero animation, and **sticky** navigation with mobile menu. |
 
 > **Honest scope:** This is a **concept demo** with a **JSON file store** and **rate-limited** API. Hardening (auth, retention, real submission channels) is **out of scope** unless you extend it.
+
+For a **complete, section-by-section inventory** of the UI, client modules, server endpoints, environment variables, persistence model, and a **detailed list of missing backend/product features** (database, auth, server-side STT, integrations, ops) plus a **phased roadmap**, see **[docs/PLATFORM-SPEC.md](docs/PLATFORM-SPEC.md)**.
 
 ---
 
@@ -63,6 +67,7 @@ This repository ships a **full-stack demo** that matches that intent:
 | **Styling** | Modular CSS | Design tokens (`css/variables.css`), no Tailwind/Bootstrap |
 | **Fonts** | Google Fonts | Playfair Display, DM Sans, Noto Nastaliq Urdu |
 | **Script** | ES modules | `import` / `export`; entry `js/main.js` |
+| **Voice input** | Web Speech API | `js/voice.js` — speech-to-text into the complaint field (Chromium; HTTPS or localhost) |
 | **AI** | Google Gemini (`generateContent`) | Server-side only — `server/lib/gemini.js`, env `GEMINI_API_KEY` |
 | **Backend** | Node.js + Express | `server/index.js` — REST API, static files, rate limit |
 | **Persistence** | JSON file store | `data/complaints.json` (created on first analyze) |
@@ -88,7 +93,7 @@ Screenshots below are **captured from the running app** (local server, Chromium)
 |:---:|
 | <img src="assets/ui-how-it-works.png" alt="Awaaz AI — How it works section with six steps from voice to complaint" width="100%" /> |
 
-**Implemented in code:** sticky **navigation**; **hero** with animated demo card; **problem strip**; **How it works** grid; **Live demo** with **English / اردو / हिंदी** samples; **Impact**, **corruption map** (illustrative), **CTA**, **footer**.
+**Implemented in code:** sticky **navigation**; **hero** with animated demo card; **problem strip**; **How it works** grid; **Live demo** with **English / اردو / हिंदी** samples, **microphone dictation**, and analyze flow; **Impact**, **corruption map** (illustrative), **CTA**, **footer**.
 
 ---
 
@@ -99,11 +104,13 @@ flowchart LR
   subgraph client [Browser]
     HTML[index.html]
     JS[js/main.js]
+    VOICE[Web Speech API]
   end
   subgraph server [Node server]
     API["/api/analyze"]
     STORE[(data/complaints.json)]
   end
+  VOICE -->|transcript| HTML
   HTML --> JS
   JS -->|POST JSON| API
   API -->|generateContent + key| GEMINI[(Google Gemini)]
@@ -151,6 +158,8 @@ Open **http://localhost:8080** (default `PORT`; override in `.env`).
 ```
 AWAAZ-AI/
 ├── README.md
+├── docs/
+│   └── PLATFORM-SPEC.md        # Full inventory: built vs missing + roadmap
 ├── package.json
 ├── .env.example
 ├── index.html
@@ -172,6 +181,7 @@ AWAAZ-AI/
     ├── config.js                # API base URL (empty = same origin)
     ├── samples.js
     ├── ui.js
+    ├── voice.js                 # Web Speech API → textarea
     ├── analyze.js               # POST /api/analyze
     └── main.js
 ```
@@ -197,9 +207,15 @@ Complaints are stored under **`data/complaints.json`** (cap configurable via `CO
 
 ## Roadmap (ideas)
 
-- [ ] Voice capture + speech-to-text pipeline  
+High-level items; **gaps and phases A–E** are expanded in **[docs/PLATFORM-SPEC.md](docs/PLATFORM-SPEC.md)** (§3–§4).
+
+- [x] Voice capture + browser speech-to-text (Web Speech API)  
 - [x] Backend proxy + persistence (basic JSON store)  
-- [ ] Real submission hooks (email, portal links, PDF export)  
+- [ ] **Phase A (harden):** real DB, retention, Helmet, tests, structured logs  
+- [ ] **Phase B (trust):** sessions/auth, admin UI, safer complaint retrieval  
+- [ ] **Phase C (voice server):** audio upload + server-side transcription  
+- [ ] **Phase D (outbound):** email/PDF, CPGRAMS/deep links, webhooks  
+- [ ] **Phase E (ops):** Docker, CI, monitoring  
 - [ ] Replace illustrative map data with live aggregates  
 
 ---

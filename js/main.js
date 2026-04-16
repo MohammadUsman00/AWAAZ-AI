@@ -1,5 +1,6 @@
 import { setLang, loadSample, showTab, copyLetter } from './ui.js';
 import { analyzeComplaint } from './analyze.js';
+import { initVoice } from './voice.js';
 
 function initNav() {
   document.querySelector('.nav-toggle')?.addEventListener('click', () => {
@@ -29,4 +30,5 @@ function initDemo() {
 document.addEventListener('DOMContentLoaded', () => {
   initNav();
   initDemo();
+  initVoice();
 });
