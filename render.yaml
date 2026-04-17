@@ -1,12 +1,22 @@
+# Render Blueprint — https://render.com/docs/blueprint-spec
+# Add secrets in the Render dashboard when you go live (GEMINI_API_KEY, ADMIN_TOKEN, etc.).
+# PORT is set automatically by Render; the app reads process.env.PORT.
+
 services:
   - type: web
     name: awaaz-ai
     runtime: node
     buildCommand: npm install
     startCommand: node server/index.js
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
+      # SQLite must live on the persistent disk (see disk.mountPath)
+      - key: DB_PATH
+        value: /data/awaaz.db
+      - key: LOG_LEVEL
+        value: info
       - key: GEMINI_API_KEY
         sync: false
       - key: GROQ_API_KEY
@@ -14,10 +24,14 @@ services:
       - key: RESEND_API_KEY
         sync: false
       - key: ADMIN_TOKEN
-        generateValue: true
+        sync: false
       - key: EMAIL_SECRET
-        generateValue: true
+        sync: false
+      - key: PUBLIC_BASE_URL
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
     disk:
       name: awaaz-data
-      mountPath: /app/data
+      mountPath: /data
       sizeGB: 1

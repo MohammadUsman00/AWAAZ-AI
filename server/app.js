@@ -342,6 +342,10 @@ export function createApp() {
     res.sendFile(path.join(__dirname, 'admin.html'));
   });
 
+  app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(ROOT, 'dashboard.html'));
+  });
+
   app.use((req, res, next) => {
     if (req.path.startsWith('/api') && !res.headersSent) {
       return res.status(404).json({ error: 'Not found' });

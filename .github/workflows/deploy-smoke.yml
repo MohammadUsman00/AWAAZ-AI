@@ -1,0 +1,33 @@
+# Run after your host finishes deploying (e.g. Render).
+# GitHub → Actions → "Deploy smoke tests" → Run workflow → enter public base URL.
+
+name: Deploy smoke tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Deployment base URL (no trailing slash), e.g. https://awaaz-ai.onrender.com'
+        required: true
+        type: string
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Smoke test live deployment
+        env:
+          SMOKE_URL: ${{ github.event.inputs.url }}
+          SMOKE_ADMIN_TOKEN: ${{ secrets.SMOKE_ADMIN_TOKEN }}
+          SMOKE_SKIP_ANALYZE: '1'
+        run: npm run test:deploy

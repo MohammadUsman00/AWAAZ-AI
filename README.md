@@ -1,140 +1,187 @@
 # Awaaz AI — آواز
 
-**Voice-first civic complaint platform for India** with AI analysis, multilingual drafting, PDF export, and complaint tracking.
+Voice-first civic complaint platform with multilingual drafting, tracking, user dashboard, and admin operations.
 
 **Tagline:** ہر شہری کی آواز، اب ایک شکایت بن سکتی ہے · हर नागरिक की आवाज़ अब शिकायत बन सकती है
 
-## Why Awaaz AI
+## Project status
 
-Awaaz AI helps citizens file strong, structured complaints in **English, Urdu, Hindi, and Kashmiri** without complex bureaucracy. Users can speak or type, get department-specific guidance, download official-style complaint PDFs, and track submissions by session.
+This repository is feature-complete for the current scope and includes:
 
-## Core capabilities
+- Citizen complaint submission (text + voice flows)
+- AI-assisted complaint structuring and draft generation
+- Session-based user dashboard (`/dashboard`)
+- Admin dashboard (`/admin`) with lifecycle controls
+- PDF export, stats, persistence, tests, and deployment assets
 
-- Multilingual complaint intake (`en`, `ur`, `hi`, `ks`)
-- Gemini-powered issue classification and complaint letter generation
-- Voice input with browser speech recognition + fallback upload transcription
-- SQLite persistence with tracking IDs and session-based complaint history
-- PDF export per complaint
-- Optional encrypted email reminders (7-day follow-up)
-- Admin dashboard with filters, status updates, and deletion controls
-- Live stats API + frontend data visualization
-- Docker + Render-ready deployment assets
+Features that depend on external APIs degrade gracefully when keys are missing (for example, analyze/transcribe/email workflows).
+
+## What is implemented today
+
+- **Languages:** English (`en`), Urdu (`ur`), Hindi (`hi`), Kashmiri (`ks`)
+- **Input modes:** text input, browser speech recognition, optional uploaded-audio transcription
+- **AI flow:** issue type, department, severity, submit-to guidance, English/Urdu draft letters, summary
+- **Tracking:** unique complaint IDs + session IDs
+- **User dashboard:** complaint history for the current browser session, status filters, metrics, PDF links
+- **Admin panel:** token-protected listing, filtering, status update (`filed|under_review|resolved|rejected`), deletion
+- **Data layer:** SQLite (`better-sqlite3`) with schema/init and indexed queries
+- **Stats:** aggregate endpoints and homepage visualization
+- **Follow-up email:** optional encrypted email storage + cron-based reminder job
+- **Quality:** Vitest (API/unit), Playwright E2E, deploy smoke script + CI workflows
+- **Deployment:** Docker + Render Blueprint with persistent disk setup
+
+## Current non-goals and limitations
+
+These are intentional scope boundaries (not broken features):
+
+- No full RBAC/multi-role auth (single admin secret model)
+- No OTP/user accounts for citizen login
+- Session dashboard is session-ID based (not account-based ownership)
+- Public tracking ID still allows complaint detail/PDF access by ID design
 
 ## Tech stack
 
-- **Runtime:** Node.js 20+, ESM
+- **Runtime:** Node.js (ESM)
 - **Backend:** Express, Helmet, CORS, express-rate-limit, Zod
-- **DB:** SQLite via better-sqlite3
+- **Database:** SQLite via `better-sqlite3`
 - **AI:** Gemini (`gemini-2.0-flash`)
-- **Voice fallback:** Groq Whisper transcription endpoint
+- **Transcription fallback:** Groq Whisper endpoint
 - **PDF:** PDFKit
 - **Email:** Resend (optional)
 - **Scheduler:** node-cron
-- **Logging:** Pino + pino-pretty
-- **Tests:** Vitest + Supertest
+- **Logging:** Pino
+- **Testing:** Vitest + Supertest + Playwright
 
-## Quick start (free tier setup)
+## Quick start (local)
 
-1. Clone the repo.
-2. Copy environment template:
-   - `cp .env.example .env` (PowerShell: `Copy-Item .env.example .env`)
-3. Add required keys in `.env`:
-   - `GEMINI_API_KEY` (required for `/api/analyze`)
-   - `GROQ_API_KEY` (optional, for audio upload transcription)
-   - `RESEND_API_KEY` (optional, for follow-up emails)
-4. Install and run:
+1. Clone repository.
+2. Create env file:
+   - Bash: `cp .env.example .env`
+   - PowerShell: `Copy-Item .env.example .env`
+3. Install dependencies:
    - `npm install`
-   - `npm start`
-5. Open:
-   - `http://localhost:8080`
+4. Run app:
+   - `npm run dev` (watch mode) or `npm start`
+5. Open `http://localhost:8080`.
 
-If optional keys are not set, related features degrade gracefully (e.g. transcription/email endpoints return controlled errors).
+### Required vs optional keys
 
-## Deployment (Render free tier)
+- **Required for AI analyze:** `GEMINI_API_KEY`
+- **Required for secured admin access:** `ADMIN_TOKEN` (recommended in all environments)
+- **Optional:** `GROQ_API_KEY`, `RESEND_API_KEY`, `EMAIL_SECRET`, `PUBLIC_BASE_URL`, `CORS_ORIGIN`
 
-1. Push repository to GitHub.
-2. Create a new Web Service on [Render](https://render.com).
-3. Use `render.yaml` (recommended) or set:
-   - **Build:** `npm install`
-   - **Start:** `node server/index.js`
-4. Configure environment variables in Render dashboard.
-5. Attach persistent disk at `/app/data` for SQLite durability.
+If you change Node versions and hit native module ABI errors:
 
-## Architecture
-
-```text
-Browser  ->  Express  ->  Zod validation  ->  Gemini API (analyze)
-                |             |                   |
-                |             +-> rate limits     +-> response parsing
-                |
-                +-> Groq API (transcribe) [optional]
-                +-> SQLite (complaints, sessions)
-                +-> PDFKit (complaint PDFs)
-                +-> Resend + node-cron (follow-up emails) [optional]
+```bash
+npm rebuild better-sqlite3
 ```
 
-## API reference
+## Routes and APIs
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/health` | Service health and Gemini key status |
-| POST | `/api/analyze` | Analyze complaint text and create complaint record |
-| GET | `/api/stats` | Platform aggregate stats for map/dashboard |
-| GET | `/api/session/complaints?sessionId=` | Session complaint list (metadata only) |
-| GET | `/api/complaints/:trackingId` | Single complaint detail |
-| GET | `/api/complaints/:trackingId/pdf` | Download complaint PDF |
-| GET | `/api/complaints` | Admin complaint list (token-protected if enabled) |
-| PATCH | `/api/complaints/:trackingId/status` | Admin status update |
-| DELETE | `/api/complaints/:trackingId` | Admin delete complaint |
-| POST | `/api/transcribe` | Audio upload transcription (Groq, optional) |
-| GET | `/admin` | Admin dashboard page |
+### Pages
 
-## Environment variables
+- `GET /` — main citizen interface
+- `GET /dashboard` — user session dashboard
+- `GET /admin` — admin dashboard (Basic auth when `ADMIN_TOKEN` is set)
 
-See `.env.example` for full list. Key variables:
+### Public APIs
 
-- `GEMINI_API_KEY` (required for analyze)
-- `GROQ_API_KEY` (optional for upload STT)
-- `RESEND_API_KEY` (optional for reminders)
-- `EMAIL_SECRET` (required to store email encrypted)
-- `ADMIN_TOKEN` (protect admin/list APIs)
-- `DB_PATH` (default `data/awaaz.db`)
+- `GET /api/health`
+- `GET /api/stats`
+- `POST /api/analyze`
+- `POST /api/transcribe` (optional external API dependency)
+- `GET /api/session/complaints?sessionId=...`
+- `GET /api/complaints/:trackingId`
+- `GET /api/complaints/:trackingId/pdf`
 
-## Screenshots (real frontend)
+### Admin APIs
 
-### 1) Landing + full app flow
+- `GET /api/complaints`
+- `PATCH /api/complaints/:trackingId/status`
+- `DELETE /api/complaints/:trackingId`
 
-![Awaaz AI Home](docs/screenshots/home-full.png)
+Admin APIs require `Authorization: Bearer <ADMIN_TOKEN>` when `ADMIN_TOKEN` is configured.
 
-### 2) Demo complaint experience
+## Admin and privacy behavior
 
-![Awaaz AI Demo](docs/screenshots/demo-section.png)
-
-### 3) Impact and live stats section
-
-![Awaaz AI Impact Stats](docs/screenshots/impact-stats.png)
+- `/admin` uses Basic auth: username `admin`, password = `ADMIN_TOKEN`
+- Admin can access complaint operations and full complaint detail used by the panel
+- Raw optional emails are not stored directly; encrypted at rest with `EMAIL_SECRET`
+- Session dashboard returns metadata list, not full records
 
 ## Testing
 
-- `npm test` -> runs full Vitest suite
-- `npm run test:watch` -> interactive watch mode
-- `npm run test:coverage` -> coverage run
+### Local test commands
 
-## Development notes
+- `npm run test:ci` — Vitest API/unit suite
+- `npm run test:e2e` — Playwright smoke suite
+- `npm run test:all` — CI + E2E
+- `npm run test:coverage` — coverage
+- `npm run test:deploy` — post-deploy smoke against live URL
 
-- `npm run dev` uses Node watch mode
-- SQLite DB file is created automatically under `data/`
-- If you switch Node versions and see `better-sqlite3` ABI errors, run:
-  - `npm rebuild better-sqlite3`
+### Deploy smoke usage
 
-## Security highlights
+PowerShell:
 
-- Helmet CSP + hardened headers
-- API and analyze-specific rate limits
-- Zod validation for analyze payload
-- Correlation IDs + structured request logging
-- AES-256-GCM email encryption (never stored raw)
+```powershell
+$env:SMOKE_URL="https://your-service.onrender.com"
+npm run test:deploy
+```
+
+Optional smoke env vars:
+
+- `SMOKE_ADMIN_TOKEN` — test admin API path
+- `SMOKE_SKIP_ANALYZE=1` — skip real analyze call (default for CI)
+- `SMOKE_RUN_ANALYZE=1` — force one live analyze call
+
+## Deploy on Render (recommended)
+
+This app is optimized for a single Node service with a persistent SQLite disk.
+
+1. Push repository to GitHub/GitLab/Bitbucket.
+2. Create a **Blueprint Instance** in Render.
+3. Render reads `render.yaml`.
+4. Confirm:
+   - persistent disk mounted at `/data`
+   - `DB_PATH=/data/awaaz.db`
+   - health check path `/api/health`
+
+### Render environment variables
+
+Set in Render dashboard:
+
+- `GEMINI_API_KEY`
+- `ADMIN_TOKEN`
+- `EMAIL_SECRET`
+- `PUBLIC_BASE_URL`
+- Optional: `GROQ_API_KEY`, `RESEND_API_KEY`, `CORS_ORIGIN`
+
+Already defined in `render.yaml`: `NODE_ENV`, `DB_PATH`, `LOG_LEVEL`.
+
+### First deploy verification
+
+1. `GET /api/health` returns `{ ok: true }`
+2. Homepage loads
+3. Complaint submission works (with Gemini key)
+4. `/dashboard` loads and shows session data
+5. `/admin` opens with `admin` + `ADMIN_TOKEN`
+6. Admin list/status/PDF flows work
+
+## Security controls
+
+- Helmet + CSP headers
+- API and analyze route rate limiting
+- Schema validation using Zod
+- Structured logs with correlation IDs
+- AES-256-GCM encryption for stored reminder emails
+
+## Repo references
+
+- Deployment checklist: [`docs/DEPLOY-CHECKLIST.md`](docs/DEPLOY-CHECKLIST.md)
+- Render blueprint: [`render.yaml`](render.yaml)
+- CI workflows: [`.github/workflows/ci.yml`](.github/workflows/ci.yml), [`.github/workflows/deploy-smoke.yml`](.github/workflows/deploy-smoke.yml)
+- Env template: [`.env.example`](.env.example)
 
 ## License
 
-Intended for civic-tech and educational use. Add your preferred OSS license file for distribution.
+Currently intended for civic-tech/educational use. Add a formal OSS `LICENSE` file before public distribution.

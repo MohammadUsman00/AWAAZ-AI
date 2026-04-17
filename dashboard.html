@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Dashboard — Awaaz AI</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+  </head>
+  <body class="dashboard-body">
+    <nav>
+      <a href="/" class="logo">
+        <div class="logo-mark"></div>
+        <div>
+          <div class="logo-text">Awaaz AI</div>
+          <div class="logo-urdu">آواز</div>
+        </div>
+      </a>
+      <button type="button" class="nav-toggle" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="nav-links">
+        <a href="/#how">How it works</a>
+        <a href="/#demo">File a Complaint</a>
+        <a href="/dashboard" class="nav-link-active" aria-current="page">My Dashboard</a>
+      </div>
+    </nav>
+
+    <main class="dashboard-main">
+      <div class="dashboard-header">
+        <div>
+          <p class="dashboard-eyebrow">Your session</p>
+          <h1 class="dashboard-title">My complaints</h1>
+          <p class="dashboard-desc">
+            Complaints filed from this browser are tied to an anonymous session ID stored on your device. No login required.
+          </p>
+        </div>
+        <div class="dashboard-session">
+          <span class="dashboard-session-label">Session ID</span>
+          <code class="dashboard-session-id" id="sessionIdDisplay">—</code>
+          <button type="button" class="dashboard-copy-btn" id="copySessionBtn">Copy</button>
+        </div>
+      </div>
+
+      <div class="dashboard-metrics" id="metricRow" aria-live="polite">
+        <div class="dashboard-metric">
+          <div class="dashboard-metric-val" id="mTotal">0</div>
+          <div class="dashboard-metric-label">Total</div>
+        </div>
+        <div class="dashboard-metric">
+          <div class="dashboard-metric-val" id="mFiled">0</div>
+          <div class="dashboard-metric-label">Filed</div>
+        </div>
+        <div class="dashboard-metric">
+          <div class="dashboard-metric-val" id="mReview">0</div>
+          <div class="dashboard-metric-label">Under review</div>
+        </div>
+        <div class="dashboard-metric">
+          <div class="dashboard-metric-val" id="mResolved">0</div>
+          <div class="dashboard-metric-label">Resolved</div>
+        </div>
+      </div>
+
+      <div class="dashboard-toolbar">
+        <label class="dashboard-filter-label" for="statusFilter">Filter by status</label>
+        <select id="statusFilter" class="dashboard-filter">
+          <option value="">All statuses</option>
+          <option value="filed">Filed</option>
+          <option value="under_review">Under review</option>
+          <option value="resolved">Resolved</option>
+          <option value="rejected">Rejected</option>
+        </select>
+        <button type="button" class="dashboard-refresh" id="refreshBtn">Refresh</button>
+      </div>
+
+      <div class="dashboard-loading" id="loadingState">Loading your complaints…</div>
+      <div class="dashboard-error" id="errorState" hidden></div>
+
+      <div class="dashboard-empty" id="emptyState" hidden>
+        <p>No complaints in this session yet.</p>
+        <a href="/#demo" class="btn-primary dashboard-cta">File your first complaint</a>
+      </div>
+
+      <div class="dashboard-table-wrap" id="tableWrap" hidden>
+        <table class="dashboard-table">
+          <thead>
+            <tr>
+              <th>Tracking ID</th>
+              <th>Issue</th>
+              <th>Severity</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="complaintRows"></tbody>
+        </table>
+      </div>
+    </main>
+
+    <footer class="dashboard-footer">
+      <div class="footer-inner">
+        <div class="footer-logo">
+          <div class="footer-logo-mark">🎙️</div>
+          <div>
+            <div class="footer-name">Awaaz AI</div>
+            <div class="footer-tagline">آواز — Voice of the Unheard</div>
+          </div>
+        </div>
+        <a href="/" class="dashboard-back-link">← Back to home</a>
+      </div>
+    </footer>
+
+    <script type="module" src="js/dashboard.js"></script>
+  </body>
+</html>
