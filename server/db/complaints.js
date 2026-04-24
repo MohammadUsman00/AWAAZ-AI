@@ -31,12 +31,12 @@ function rowFromStmt(row) {
 export function generateTrackingId() {
   const db = getDb();
   for (let i = 0; i < 25; i++) {
-    const n = Math.floor(Math.random() * 90000) + 10000;
-    const id = `AWZ-2026-0${n}`;
+    const token = crypto.randomBytes(10).toString('hex').toUpperCase();
+    const id = `AWZ-2026-${token}`;
     const existing = db.prepare('SELECT 1 AS x FROM complaints WHERE tracking_id = ?').get(id);
     if (!existing) return id;
   }
-  return `AWZ-2026-${crypto.randomUUID().replace(/-/g, '').slice(0, 10).toUpperCase()}`;
+  return `AWZ-2026-${crypto.randomUUID().replace(/-/g, '').toUpperCase()}`;
 }
 
 /**

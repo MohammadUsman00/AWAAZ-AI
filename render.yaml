@@ -6,7 +6,7 @@ services:
   - type: web
     name: awaaz-ai
     runtime: node
-    buildCommand: npm install
+    buildCommand: npm ci
     startCommand: node server/index.js
     healthCheckPath: /api/health
     envVars:
@@ -17,6 +17,24 @@ services:
         value: /data/awaaz.db
       - key: LOG_LEVEL
         value: info
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash-lite
+      - key: GEMINI_MAX_TOKENS
+        value: "1100"
+      - key: GEMINI_MAX_RETRIES
+        value: "2"
+      - key: GEMINI_LETTER_STYLE
+        value: compact
+      - key: ENABLE_GROQ_FALLBACK
+        value: "1"
+      - key: GROQ_MODEL
+        value: llama-3.1-8b-instant
+      - key: ANALYZE_CACHE_MAX_ITEMS
+        value: "300"
+      - key: ANALYZE_CACHE_TTL_MS
+        value: "86400000"
+      - key: DAILY_AI_TOKEN_BUDGET
+        value: "0"
       - key: GEMINI_API_KEY
         sync: false
       - key: GROQ_API_KEY
