@@ -57,7 +57,8 @@ export async function analyzeComplaint() {
     clearInterval(msgInterval);
 
     if (!resp.ok) {
-      const errMsg = payload.error || resp.statusText || 'Request failed';
+      const apiHint = resp.status === 503 ? 'AI service is busy. Please retry in 20-30 seconds.' : '';
+      const errMsg = apiHint || payload.error || resp.statusText || 'Request failed';
       throw new Error(errMsg);
     }
 

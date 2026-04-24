@@ -37,14 +37,14 @@ These are intentional scope boundaries (not broken features):
 - No full RBAC/multi-role auth (single admin secret model)
 - No OTP/user accounts for citizen login
 - Session dashboard is session-ID based (not account-based ownership)
-- Public tracking ID still allows complaint detail/PDF access by ID design
+- Public tracking ID still allows complaint detail/PDF access by ID design, but IDs are high-entropy and not sequential
 
 ## Tech stack
 
 - **Runtime:** Node.js (ESM)
 - **Backend:** Express, Helmet, CORS, express-rate-limit, Zod
 - **Database:** SQLite via `better-sqlite3`
-- **AI:** Gemini (`gemini-2.0-flash`)
+- **AI:** Gemini (`gemini-2.5-flash-lite`) with optional Groq fallback
 - **Transcription fallback:** Groq Whisper endpoint
 - **PDF:** PDFKit
 - **Email:** Resend (optional)
@@ -69,6 +69,12 @@ These are intentional scope boundaries (not broken features):
 - **Required for AI analyze:** `GEMINI_API_KEY`
 - **Required for secured admin access:** `ADMIN_TOKEN` (recommended in all environments)
 - **Optional:** `GROQ_API_KEY`, `RESEND_API_KEY`, `EMAIL_SECRET`, `PUBLIC_BASE_URL`, `CORS_ORIGIN`
+- **Cost controls (recommended):**
+  - `GEMINI_MAX_TOKENS=1100`
+  - `GEMINI_LETTER_STYLE=compact`
+  - `ENABLE_GROQ_FALLBACK=1` (uses Groq only when Gemini fails)
+  - `ANALYZE_CACHE_MAX_ITEMS=300` and `ANALYZE_CACHE_TTL_MS=86400000` (24h cache)
+  - `DAILY_AI_TOKEN_BUDGET=0` (set >0 to enforce daily token guardrail)
 
 If you change Node versions and hit native module ABI errors:
 

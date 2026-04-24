@@ -115,7 +115,7 @@ This section merges **product** gaps with **engineering** gaps so planning is ex
 | Gap | Why it matters |
 |-----|----------------|
 | **No user accounts** | No way to bind complaints to a **verified** identity or **anonymous** session safely. |
-| **No JWT / sessions** | Only optional **`ADMIN_TOKEN`** for **list**; **single-complaint GET** is open to anyone with the ID (ID is guessable in theory). |
+| **No JWT / sessions** | Only optional **`ADMIN_TOKEN`** for admin APIs; **single-complaint GET/PDF** is open to anyone with the high-entropy ID. |
 | **No RBAC** | No roles (citizen, officer, admin). |
 | **No API keys for clients** | No **per-app** or **per-device** keys for external frontends. |
 | **Limited hardening** | No **Helmet**, **CSRF** (if cookies), **request signing**, **WAF** rules in code. |

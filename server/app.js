@@ -250,7 +250,18 @@ export function createApp() {
     } catch (err) {
       logger.error({ err, reqId: req.id }, 'analyze failed');
       const message = err?.message || 'Analysis failed';
-      const status = message.includes('misconfiguration') || message.includes('GEMINI') ? 503 : 500;
+      const lower = String(message).toLowerCase();
+      const isUpstreamTemporary =
+        lower.includes('misconfiguration') ||
+        lower.includes('gemini') ||
+        lower.includes('groq') ||
+        lower.includes('rate limit') ||
+        lower.includes('too many requests') ||
+        lower.includes('daily ai budget reached') ||
+        lower.includes('high demand') ||
+        lower.includes('temporarily overloaded') ||
+        lower.includes('try again later');
+      const status = isUpstreamTemporary ? 503 : 500;
       res.status(status).json({ error: message });
     }
   });
