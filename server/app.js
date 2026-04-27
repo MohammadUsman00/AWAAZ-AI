@@ -34,7 +34,15 @@ const VALID_STATUSES = new Set(['filed', 'under_review', 'resolved', 'rejected']
 
 function requireAdmin(req, res, next) {
   const tok = process.env.ADMIN_TOKEN;
-  if (!tok) return next();
+  if (!tok) {
+    if (process.env.NODE_ENV === 'production') {
+      return res.status(503).json({
+        error: 'Admin not configured',
+        details: 'Set ADMIN_TOKEN in the environment',
+      });
+    }
+    return next();
+  }
   const auth = req.headers.authorization;
   if (auth !== `Bearer ${tok}`) {
     res.setHeader('WWW-Authenticate', 'Bearer realm="admin"');

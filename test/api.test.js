@@ -64,6 +64,21 @@ describe('api', () => {
     expect(res.status).toBe(401);
   });
 
+  it('GET /api/complaints — production without ADMIN_TOKEN → 503', async () => {
+    const prevEnv = process.env.NODE_ENV;
+    const prevTok = process.env.ADMIN_TOKEN;
+    process.env.NODE_ENV = 'production';
+    delete process.env.ADMIN_TOKEN;
+    try {
+      const res = await request(app).get('/api/complaints');
+      expect(res.status).toBe(503);
+      expect(res.body.error).toBe('Admin not configured');
+    } finally {
+      process.env.NODE_ENV = prevEnv;
+      process.env.ADMIN_TOKEN = prevTok;
+    }
+  });
+
   it('GET /api/stats → 200 with shape', async () => {
     const res = await request(app).get('/api/stats');
     expect(res.status).toBe(200);

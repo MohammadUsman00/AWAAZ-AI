@@ -15,6 +15,9 @@ const server = app.listen(PORT, () => {
   if (!process.env.GEMINI_API_KEY) {
     logger.warn('GEMINI_API_KEY is not set — /api/analyze will return 503');
   }
+  if (process.env.NODE_ENV === 'production' && !process.env.ADMIN_TOKEN) {
+    logger.warn('ADMIN_TOKEN is not set — admin APIs return 503 until configured');
+  }
 });
 
 server.on('error', (err) => {
