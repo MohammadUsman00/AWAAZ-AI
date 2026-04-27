@@ -142,29 +142,23 @@ Optional smoke env vars:
 
 ## Deploy on Render (recommended)
 
-Three blueprints ship in this repo:
+This repo uses one Blueprint file:
 
 | File | Tier | SQLite |
 |------|------|--------|
-| [`render.yaml`](render.yaml) | **Free (default)** (`plan: free`) | Ephemeral — data may reset on redeploy/restart ([Render free tier cannot use disks](https://render.com/docs/free)) |
-| [`render-free.yaml`](render-free.yaml) | **Free (same as above)** | Ephemeral (kept for explicit naming) |
-| [`render-paid.yaml`](render-paid.yaml) | **Paid** (`plan: starter` + disk) | Persistent disk at `/data` |
+| [`render.yaml`](render.yaml) | **Free** (`plan: free`) | Ephemeral — data may reset on redeploy/restart ([Render free tier cannot use disks](https://render.com/docs/free)) |
 
-If you do nothing, Render reads `render.yaml` and deploys the **free** setup by default.
-
-### Paid deploy (persistent DB)
+### Deploy steps
 
 1. Push repository to GitHub/GitLab/Bitbucket.
-2. Create a **Blueprint Instance** in Render and use **`render-paid.yaml`**.
+2. Create a **Blueprint Instance** in Render (default path `render.yaml`).
 3. Confirm:
-   - persistent disk mounted at `/data`
-   - `DB_PATH=/data/awaaz.db`
+   - plan is `free`
+   - no persistent disk
+   - `DB_PATH=data/awaaz.db`
    - health check path `/api/health`
 
-### Free deploy (demo only)
-
-1. Use default `render.yaml`, or choose `render-free.yaml`.
-2. No disk; `DB_PATH` is `data/awaaz.db` on ephemeral storage.
+If you want persistent SQLite later, move to a paid plan and attach a disk in Render (`/data`), then set `DB_PATH=/data/awaaz.db`.
 
 ### Render environment variables
 
@@ -176,7 +170,7 @@ Set in Render dashboard:
 - `PUBLIC_BASE_URL`
 - Optional: `GROQ_API_KEY`, `RESEND_API_KEY`, `CORS_ORIGIN`
 
-Already defined in both blueprints (values differ): `NODE_ENV`, `DB_PATH`, `LOG_LEVEL`.
+Already defined in `render.yaml`: `NODE_ENV`, `DB_PATH`, `LOG_LEVEL`.
 
 ### First deploy verification
 
@@ -198,7 +192,7 @@ Already defined in both blueprints (values differ): `NODE_ENV`, `DB_PATH`, `LOG_
 ## Repo references
 
 - Deployment checklist: [`docs/DEPLOY-CHECKLIST.md`](docs/DEPLOY-CHECKLIST.md)
-- Render blueprints: free default [`render.yaml`](render.yaml), free explicit [`render-free.yaml`](render-free.yaml), paid + disk [`render-paid.yaml`](render-paid.yaml)
+- Render blueprint: free [`render.yaml`](render.yaml)
 - CI workflows: [`.github/workflows/ci.yml`](.github/workflows/ci.yml), [`.github/workflows/deploy-smoke.yml`](.github/workflows/deploy-smoke.yml)
 - Env template: [`.env.example`](.env.example)
 
