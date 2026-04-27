@@ -114,12 +114,15 @@ export function createApp() {
 
   app.use(
     helmet({
+      crossOriginResourcePolicy: false,
       contentSecurityPolicy: {
         directives: {
           defaultSrc: ["'self'"],
           scriptSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
           styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com', 'https://fonts.gstatic.com'],
           fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+          imgSrc: ["'self'", 'data:', 'blob:', 'https:'],
+          mediaSrc: ["'self'", 'blob:', 'data:'],
           connectSrc: ["'self'"],
         },
       },
