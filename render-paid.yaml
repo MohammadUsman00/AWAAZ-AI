@@ -1,17 +1,13 @@
-# Render Blueprint — DEFAULT FREE tier ($0) for easy deploys.
+# Render Blueprint — PAID tier with persistent disk.
 #
-# This default file uses plan: free and NO persistent disk.
-# SQLite data is ephemeral and can reset on redeploy/restart.
-# For persistent disk (paid Starter+), use render-paid.yaml.
-#
-# Add secrets in the Render dashboard when you go live (GEMINI_API_KEY, ADMIN_TOKEN, etc.).
-# PORT is set automatically by Render; the app reads process.env.PORT.
+# Use this file when you want durable SQLite on Render.
+# Persistent disks require a paid web service (Starter or higher).
 
 services:
   - type: web
     name: awaaz-ai
     runtime: node
-    plan: free
+    plan: starter
     buildCommand: npm ci
     startCommand: node server/index.js
     healthCheckPath: /api/health
@@ -19,7 +15,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: DB_PATH
-        value: data/awaaz.db
+        value: /data/awaaz.db
       - key: LOG_LEVEL
         value: info
       - key: GEMINI_MODEL
@@ -54,3 +50,7 @@ services:
         sync: false
       - key: CORS_ORIGIN
         sync: false
+    disk:
+      name: awaaz-data
+      mountPath: /data
+      sizeGB: 1

@@ -142,19 +142,20 @@ Optional smoke env vars:
 
 ## Deploy on Render (recommended)
 
-Two blueprints ship in this repo:
+Three blueprints ship in this repo:
 
 | File | Tier | SQLite |
 |------|------|--------|
-| [`render-free.yaml`](render-free.yaml) | **Free** (`plan: free`) | Ephemeral — data may reset on redeploy/restart ([Render free tier cannot use disks](https://render.com/docs/free)) |
-| [`render.yaml`](render.yaml) | **Paid** (`plan: starter` + disk) | Persistent disk at `/data` |
+| [`render.yaml`](render.yaml) | **Free (default)** (`plan: free`) | Ephemeral — data may reset on redeploy/restart ([Render free tier cannot use disks](https://render.com/docs/free)) |
+| [`render-free.yaml`](render-free.yaml) | **Free (same as above)** | Ephemeral (kept for explicit naming) |
+| [`render-paid.yaml`](render-paid.yaml) | **Paid** (`plan: starter` + disk) | Persistent disk at `/data` |
 
-Pick **Blueprint path** accordingly when you create the service (defaults often read `render.yaml`, which bills for Starter + disk).
+If you do nothing, Render reads `render.yaml` and deploys the **free** setup by default.
 
 ### Paid deploy (persistent DB)
 
 1. Push repository to GitHub/GitLab/Bitbucket.
-2. Create a **Blueprint Instance** in Render and use **`render.yaml`** (or set blueprint file to `render.yaml`).
+2. Create a **Blueprint Instance** in Render and use **`render-paid.yaml`**.
 3. Confirm:
    - persistent disk mounted at `/data`
    - `DB_PATH=/data/awaaz.db`
@@ -162,7 +163,7 @@ Pick **Blueprint path** accordingly when you create the service (defaults often 
 
 ### Free deploy (demo only)
 
-1. Same as above but choose **`render-free.yaml`** as the Blueprint file.
+1. Use default `render.yaml`, or choose `render-free.yaml`.
 2. No disk; `DB_PATH` is `data/awaaz.db` on ephemeral storage.
 
 ### Render environment variables
@@ -197,7 +198,7 @@ Already defined in both blueprints (values differ): `NODE_ENV`, `DB_PATH`, `LOG_
 ## Repo references
 
 - Deployment checklist: [`docs/DEPLOY-CHECKLIST.md`](docs/DEPLOY-CHECKLIST.md)
-- Render blueprint (paid + disk): [`render.yaml`](render.yaml) · free tier: [`render-free.yaml`](render-free.yaml)
+- Render blueprints: free default [`render.yaml`](render.yaml), free explicit [`render-free.yaml`](render-free.yaml), paid + disk [`render-paid.yaml`](render-paid.yaml)
 - CI workflows: [`.github/workflows/ci.yml`](.github/workflows/ci.yml), [`.github/workflows/deploy-smoke.yml`](.github/workflows/deploy-smoke.yml)
 - Env template: [`.env.example`](.env.example)
 
