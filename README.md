@@ -142,15 +142,28 @@ Optional smoke env vars:
 
 ## Deploy on Render (recommended)
 
-This app is optimized for a single Node service with a persistent SQLite disk.
+Two blueprints ship in this repo:
+
+| File | Tier | SQLite |
+|------|------|--------|
+| [`render-free.yaml`](render-free.yaml) | **Free** (`plan: free`) | Ephemeral — data may reset on redeploy/restart ([Render free tier cannot use disks](https://render.com/docs/free)) |
+| [`render.yaml`](render.yaml) | **Paid** (`plan: starter` + disk) | Persistent disk at `/data` |
+
+Pick **Blueprint path** accordingly when you create the service (defaults often read `render.yaml`, which bills for Starter + disk).
+
+### Paid deploy (persistent DB)
 
 1. Push repository to GitHub/GitLab/Bitbucket.
-2. Create a **Blueprint Instance** in Render.
-3. Render reads `render.yaml`.
-4. Confirm:
+2. Create a **Blueprint Instance** in Render and use **`render.yaml`** (or set blueprint file to `render.yaml`).
+3. Confirm:
    - persistent disk mounted at `/data`
    - `DB_PATH=/data/awaaz.db`
    - health check path `/api/health`
+
+### Free deploy (demo only)
+
+1. Same as above but choose **`render-free.yaml`** as the Blueprint file.
+2. No disk; `DB_PATH` is `data/awaaz.db` on ephemeral storage.
 
 ### Render environment variables
 
@@ -162,7 +175,7 @@ Set in Render dashboard:
 - `PUBLIC_BASE_URL`
 - Optional: `GROQ_API_KEY`, `RESEND_API_KEY`, `CORS_ORIGIN`
 
-Already defined in `render.yaml`: `NODE_ENV`, `DB_PATH`, `LOG_LEVEL`.
+Already defined in both blueprints (values differ): `NODE_ENV`, `DB_PATH`, `LOG_LEVEL`.
 
 ### First deploy verification
 
@@ -184,7 +197,7 @@ Already defined in `render.yaml`: `NODE_ENV`, `DB_PATH`, `LOG_LEVEL`.
 ## Repo references
 
 - Deployment checklist: [`docs/DEPLOY-CHECKLIST.md`](docs/DEPLOY-CHECKLIST.md)
-- Render blueprint: [`render.yaml`](render.yaml)
+- Render blueprint (paid + disk): [`render.yaml`](render.yaml) · free tier: [`render-free.yaml`](render-free.yaml)
 - CI workflows: [`.github/workflows/ci.yml`](.github/workflows/ci.yml), [`.github/workflows/deploy-smoke.yml`](.github/workflows/deploy-smoke.yml)
 - Env template: [`.env.example`](.env.example)
 

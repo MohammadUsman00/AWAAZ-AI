@@ -1,4 +1,8 @@
 # Render Blueprint — https://render.com/docs/blueprint-spec
+#
+# NOT the free tier: persistent disks require a paid web service (Starter or higher).
+# Free instances cannot attach disks — use render-free.yaml for $0 (ephemeral SQLite).
+#
 # Add secrets in the Render dashboard when you go live (GEMINI_API_KEY, ADMIN_TOKEN, etc.).
 # PORT is set automatically by Render; the app reads process.env.PORT.
 
@@ -6,6 +10,7 @@ services:
   - type: web
     name: awaaz-ai
     runtime: node
+    plan: starter
     buildCommand: npm ci
     startCommand: node server/index.js
     healthCheckPath: /api/health
