@@ -30,6 +30,30 @@ Features that depend on external APIs degrade gracefully when keys are missing (
 - **Quality:** Vitest (API/unit), Playwright E2E, deploy smoke script + CI workflows
 - **Deployment:** Docker + Render Blueprint with persistent disk setup
 
+## Platform Overview
+
+### 1. Admin Control Center
+A secure portal for administrators to review, filter, and manage all filed complaints, including one-click PDF generation and lifecycle tracking.
+
+![Admin Dashboard](./docs/screenshots/screenshot-1.png)
+
+### 2. Live Impact Analytics
+A public-facing dashboard demonstrating real-time patterns, top issue types, and transparent metrics across regions.
+
+![Live Impact Analytics](./docs/screenshots/screenshot-2.png)
+
+### 3. AI-Powered Complaint Submission
+A multilingual, voice-first interface allowing citizens to dictate issues in their native language while AI structures formal complaint letters.
+
+![Complaint Submission - Interface](./docs/screenshots/screenshot-3.png)
+
+![Complaint Submission - Draft](./docs/screenshots/screenshot-4.png)
+
+### 4. Anonymous Citizen Dashboard
+Session-based tracking allowing users to monitor the status of their submitted complaints without requiring account creation.
+
+![Citizen Dashboard](./docs/screenshots/screenshot-5.png)
+
 ## Current non-goals and limitations
 
 These are intentional scope boundaries (not broken features):
