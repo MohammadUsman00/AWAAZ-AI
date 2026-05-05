@@ -24,17 +24,18 @@ section {
   line-height: 1.1;
   letter-spacing: -0.5px;
   margin-bottom: 1rem;
+  color: var(--text-primary);
 }
 
 .section-desc {
   font-size: 1.05rem;
-  color: var(--ink2);
+  color: var(--text-muted);
   line-height: 1.7;
   max-width: 600px;
 }
 
 .problem-strip {
-  background: var(--ink);
+  background: var(--problem-strip-bg);
   padding: 3rem clamp(1rem, 4vw, 3rem);
   overflow: hidden;
 }
@@ -63,7 +64,7 @@ section {
 }
 
 .problem-item {
-  color: var(--white);
+  color: var(--text-primary);
 }
 
 .problem-num {
@@ -75,13 +76,13 @@ section {
 
 .problem-label {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--problem-label);
   margin-top: 4px;
   line-height: 1.4;
 }
 
 .how-section {
-  background: var(--white);
+  background: var(--bg-card);
 }
 
 .flow-grid {
@@ -104,7 +105,7 @@ section {
 }
 
 .flow-step:hover {
-  background: var(--sand);
+  background: var(--sand2);
 }
 
 .flow-num {
@@ -117,19 +118,21 @@ section {
 }
 
 .flow-icon {
-  font-size: 1.8rem;
   margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
 }
 
 .flow-title {
   font-weight: 700;
   font-size: 1rem;
   margin-bottom: 0.5rem;
+  color: var(--text-primary);
 }
 
 .flow-desc {
   font-size: 13px;
-  color: var(--ink3);
+  color: var(--text-muted);
   line-height: 1.6;
 }
 
@@ -144,8 +147,7 @@ section {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-size: 11px;
+  color: var(--flow-arrow-fg);
   z-index: 1;
   transform: translateY(-50%);
 }

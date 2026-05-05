@@ -1,5 +1,5 @@
 .map-section {
-  background: var(--ink);
+  background: var(--map-bg);
   padding: 4rem clamp(1rem, 4vw, 3rem);
 }
 
@@ -13,16 +13,16 @@
 }
 
 .map-section .section-title {
-  color: var(--white);
+  color: var(--map-title);
 }
 
 .map-section .section-desc {
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--map-desc);
 }
 
 .corruption-map {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--map-panel-bg);
+  border: 1px solid var(--map-panel-border);
   border-radius: 20px;
   padding: 2rem;
   margin-top: 3rem;
@@ -38,7 +38,7 @@
 }
 
 .map-chart-title {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--map-chart-title);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.1em;
@@ -59,7 +59,7 @@
 }
 
 .bar-label {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--map-bar-label);
   font-size: 12px;
   width: 80px;
   flex-shrink: 0;
@@ -67,7 +67,7 @@
 
 .bar-track {
   flex: 1;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--map-bar-track);
   border-radius: 4px;
   height: 8px;
   overflow: hidden;
@@ -81,7 +81,7 @@
 }
 
 .bar-pct {
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--map-bar-pct);
   font-size: 11px;
   width: 32px;
   text-align: right;
@@ -97,18 +97,18 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--map-issue-bg);
   border-radius: var(--radius-sm);
   padding: 10px 14px;
 }
 
 .issue-name {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--map-issue-name);
   font-size: 13px;
 }
 
 .issue-count {
-  background: rgba(232, 98, 26, 0.2);
+  background: var(--saffron-glow);
   color: var(--saffron2);
   padding: 3px 10px;
   border-radius: 100px;

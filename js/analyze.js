@@ -2,6 +2,7 @@ import { API } from './config.js';
 import { state, showTab, PLACEHOLDER_HTML } from './ui.js';
 import { getSessionId } from './session.js';
 import { setLastTrackingId } from './history.js';
+import { refreshLucide } from './icons.js';
 
 const LOADING_MESSAGES = [
   'Transcribing your complaint...',
@@ -22,6 +23,7 @@ export async function analyzeComplaint() {
   btn.disabled = true;
   const ph = document.getElementById('outputPlaceholder');
   ph.innerHTML = PLACEHOLDER_HTML;
+  refreshLucide();
   ph.style.display = 'none';
   document.getElementById('resultCard').classList.remove('visible');
   const lo = document.getElementById('loadingOverlay');
@@ -92,13 +94,15 @@ export async function analyzeComplaint() {
     showTab('en');
     lo.classList.remove('active');
     document.getElementById('resultCard').classList.add('visible');
+    refreshLucide();
   } catch (e) {
     clearInterval(msgInterval);
     lo.classList.remove('active');
     const phEl = document.getElementById('outputPlaceholder');
     phEl.style.display = 'flex';
     const detail = e && e.message ? String(e.message) : '';
-    phEl.innerHTML = `<div class="output-placeholder-icon">⚠️</div><div>Error analyzing complaint. Please try again.</div><div style="font-size:12px; color: var(--ink3); max-width: 280px">${escapeHtml(detail)}</div>`;
+    phEl.innerHTML = `<div class="output-placeholder-icon"><i data-lucide="alert-triangle" class="icon-2xl icon-saffron" aria-hidden="true"></i></div><div>Error analyzing complaint. Please try again.</div><div class="output-placeholder-sub output-placeholder-detail">${escapeHtml(detail)}</div>`;
+    refreshLucide();
   }
   btn.disabled = false;
 }

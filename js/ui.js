@@ -1,4 +1,5 @@
 import { samples } from './samples.js';
+import { refreshLucide } from './icons.js';
 
 export const state = {
   currentLang: 'en',
@@ -7,8 +8,11 @@ export const state = {
   currentTab: 'en',
 };
 
-export const PLACEHOLDER_HTML =
-  '<div class="output-placeholder-icon">📋</div><div>Your complaint analysis will appear here</div><div style="font-size:12px; color: var(--ink3)">AI-powered • Legal • Anonymous</div>';
+export const PLACEHOLDER_HTML = `<div class="output-placeholder-icon"><i data-lucide="file-text" class="icon-2xl icon-muted" aria-hidden="true"></i></div><div>Your complaint analysis will appear here</div><div class="output-placeholder-sub">AI-powered · Legal · Anonymous</div>`;
+
+function copyBtnDefaultHtml() {
+  return '<i data-lucide="copy" class="icon-sm" aria-hidden="true"></i> Copy';
+}
 
 export function setLang(lang, btn) {
   state.currentLang = lang;
@@ -23,7 +27,7 @@ export function setLang(lang, btn) {
         ? 'अपनी शिकायत यहाँ लिखें...'
         : lang === 'ks'
           ? 'کٔرۍ یتھ تہِ پَنٕنۍ شِکایت لِکھِو...'
-        : "Describe your issue... e.g. 'The new road built in our village broke after first rain, contractor has disappeared with the money'";
+          : "Describe your issue... e.g. 'The new road built in our village broke after first rain, contractor has disappeared with the money'";
   window.dispatchEvent(new CustomEvent('awaaz:lang'));
 }
 
@@ -32,6 +36,7 @@ export function loadSample(type) {
   const row = samples[type];
   ta.value = row[state.currentLang] || row.en;
   ta.classList.toggle('urdu', state.currentLang === 'ur');
+  refreshLucide();
 }
 
 export function showTab(tab) {
@@ -56,15 +61,19 @@ export function copyLetter() {
   const copyBtn = document.getElementById('copyLetterBtn');
   navigator.clipboard.writeText(text).then(
     () => {
-      copyBtn.textContent = 'Copied!';
+      copyBtn.innerHTML = '<i data-lucide="copy" class="icon-sm" aria-hidden="true"></i> Copied!';
+      refreshLucide();
       setTimeout(() => {
-        copyBtn.textContent = 'Copy';
+        copyBtn.innerHTML = copyBtnDefaultHtml();
+        refreshLucide();
       }, 2000);
     }
   ).catch(() => {
-    copyBtn.textContent = 'Copy failed';
+    copyBtn.innerHTML = '<i data-lucide="copy" class="icon-sm" aria-hidden="true"></i> Copy failed';
+    refreshLucide();
     setTimeout(() => {
-      copyBtn.textContent = 'Copy';
+      copyBtn.innerHTML = copyBtnDefaultHtml();
+      refreshLucide();
     }, 2000);
   });
 }

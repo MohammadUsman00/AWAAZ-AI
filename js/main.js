@@ -3,6 +3,8 @@ import { analyzeComplaint } from './analyze.js';
 import { initVoice } from './voice.js';
 import { initStats } from './stats.js';
 import { initHistory } from './history.js';
+import { initTheme } from './theme.js';
+import { refreshLucide } from './icons.js';
 
 function initNav() {
   document.querySelector('.nav-toggle')?.addEventListener('click', () => {
@@ -30,9 +32,11 @@ function initDemo() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
   initNav();
   initDemo();
   initVoice();
   initHistory();
   initStats();
+  refreshLucide();
 });

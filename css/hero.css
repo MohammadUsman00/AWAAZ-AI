@@ -20,7 +20,7 @@
   align-items: center;
   gap: 8px;
   background: var(--saffron-glow);
-  border: 1px solid rgba(232, 98, 26, 0.25);
+  border: 1px solid var(--hero-eyebrow-border);
   color: var(--saffron);
   padding: 6px 14px;
   border-radius: 100px;
@@ -46,7 +46,7 @@
   font-weight: 900;
   line-height: 1.08;
   letter-spacing: -1px;
-  color: var(--ink);
+  color: var(--text-primary);
   margin-bottom: 1rem;
   animation: fadeUp 0.6s 0.1s ease both;
 }
@@ -61,11 +61,11 @@
   font-family: 'Noto Nastaliq Urdu', serif;
   font-size: 1.3rem;
   direction: rtl;
-  color: var(--ink2);
+  color: var(--text-muted);
   margin-bottom: 1.5rem;
   padding: 12px 16px;
   border-right: 3px solid var(--saffron);
-  background: var(--white);
+  background: var(--bg-card);
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   animation: fadeUp 0.6s 0.2s ease both;
   line-height: 2;
@@ -74,7 +74,7 @@
 .hero-desc {
   font-size: 1.05rem;
   line-height: 1.75;
-  color: var(--ink2);
+  color: var(--text-muted);
   margin-bottom: 2rem;
   animation: fadeUp 0.6s 0.3s ease both;
 }
@@ -91,7 +91,7 @@
   align-items: center;
   gap: 8px;
   background: var(--saffron);
-  color: white;
+  color: #fdfcfa;
   padding: 14px 28px;
   border-radius: 100px;
   font-size: 15px;
@@ -103,12 +103,12 @@
     transform 0.2s,
     background 0.2s,
     box-shadow 0.2s;
-  box-shadow: 0 4px 16px rgba(232, 98, 26, 0.3);
+  box-shadow: 0 4px 16px var(--saffron-glow);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(232, 98, 26, 0.4);
+  box-shadow: 0 8px 24px var(--saffron-glow);
 }
 
 .btn-primary:active {
@@ -120,7 +120,7 @@
   align-items: center;
   gap: 8px;
   background: transparent;
-  color: var(--ink);
+  color: var(--text-primary);
   padding: 14px 24px;
   border-radius: 100px;
   font-size: 15px;
@@ -134,7 +134,7 @@
 }
 
 .btn-secondary:hover {
-  border-color: var(--ink2);
+  border-color: var(--text-muted);
   color: var(--saffron);
 }
 
@@ -153,12 +153,12 @@
   font-family: 'Playfair Display', serif;
   font-size: 1.8rem;
   font-weight: 900;
-  color: var(--ink);
+  color: var(--text-primary);
 }
 
 .stat-label {
   font-size: 12px;
-  color: var(--ink3);
+  color: var(--text-muted);
   margin-top: 2px;
 }
 
@@ -168,7 +168,7 @@
 }
 
 .demo-card {
-  background: var(--white);
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: 20px;
   padding: 24px;
@@ -202,17 +202,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  flex-shrink: 0;
 }
 
 .demo-name {
   font-weight: 600;
   font-size: 14px;
+  color: var(--text-primary);
 }
 
 .demo-sub {
   font-size: 12px;
-  color: var(--ink3);
+  color: var(--text-muted);
 }
 
 .voice-wave {
@@ -227,7 +228,10 @@
 
 .wave-icon {
   color: var(--saffron);
-  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .wave-bars {
@@ -248,7 +252,7 @@
   font-family: 'Noto Nastaliq Urdu', serif;
   font-size: 12px;
   direction: rtl;
-  color: var(--ink2);
+  color: var(--text-muted);
   margin-left: auto;
   text-align: right;
   max-width: 160px;
@@ -294,42 +298,36 @@
   animation-delay: 3.4s;
 }
 
-.proc-icon {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
+.proc-icon-slot {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
-  flex-shrink: 0;
 }
 
-.proc-icon.green {
-  background: var(--emerald-glow);
-  color: var(--emerald);
-}
-
-.proc-icon.orange {
-  background: var(--saffron-glow);
-  color: var(--saffron);
+.proc-icon-slot .icon-circle {
+  padding: 8px;
 }
 
 .proc-label {
   flex: 1;
   font-weight: 500;
-  color: var(--ink);
+  color: var(--text-primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
 .proc-val {
   font-size: 12px;
-  color: var(--ink3);
+  color: var(--text-muted);
   font-family: monospace;
 }
 
 .tracking-badge {
   background: linear-gradient(135deg, var(--emerald), var(--emerald2));
-  color: white;
+  color: #fdfcfa;
   border-radius: var(--radius-sm);
   padding: 12px 16px;
   display: flex;
@@ -353,5 +351,7 @@
 }
 
 .tracking-check {
-  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

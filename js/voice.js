@@ -69,6 +69,14 @@ function setRecordingUI(on, interimLine = '') {
   const { mic, status } = getEls();
   if (mic) {
     mic.classList.toggle('recording', on);
+    const icon = mic.querySelector('svg.lucide, i[data-lucide]');
+    if (on) {
+      icon?.classList.remove('icon-white');
+      icon?.classList.add('icon-recording');
+    } else {
+      icon?.classList.remove('icon-recording');
+      icon?.classList.add('icon-white');
+    }
     mic.setAttribute('aria-pressed', on ? 'true' : 'false');
     mic.setAttribute('aria-label', on ? 'Stop recording' : 'Speak your complaint');
   }

@@ -3,12 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        var saved = localStorage.getItem('awaaz_theme');
+        var sys = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        var theme = saved || sys;
+        if (theme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
     <title>Awaaz AI — آواز | Voice of the Unheard</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/main.css" />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   </head>
   <body>
     <h2 class="sr-only">
@@ -31,7 +42,17 @@
         <a href="#demo">Try Demo</a>
         <a href="#impact">Impact</a>
         <a href="/dashboard">My Dashboard</a>
-        <a href="#demo" class="nav-cta">File a Complaint</a>
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          type="button"
+          aria-label="Toggle dark and light mode"
+          title="Toggle theme"
+        >
+          <i data-lucide="moon" class="icon-md theme-icon-dark" aria-hidden="true"></i>
+          <i data-lucide="sun" class="icon-md theme-icon-light" aria-hidden="true"></i>
+        </button>
+        <a href="#demo" class="nav-cta"><i data-lucide="mic" class="icon-sm" aria-hidden="true"></i> File a Complaint</a>
       </div>
     </nav>
 
@@ -48,8 +69,12 @@
           generates a legal complaint — in 10 seconds. Anonymous. Free. Powerful.
         </p>
         <div class="hero-actions">
-          <a href="#demo" class="btn-primary">🎙️ File Your Complaint</a>
-          <a href="#how" class="btn-secondary">See How It Works →</a>
+          <a href="#demo" class="btn-primary"
+            ><i data-lucide="mic" class="icon-md" aria-hidden="true"></i> File Your Complaint</a
+          >
+          <a href="#how" class="btn-secondary"
+            >See How It Works <i data-lucide="arrow-right" class="icon-sm" aria-hidden="true"></i
+          ></a>
         </div>
         <div class="hero-stats">
           <div class="stat-item">
@@ -70,14 +95,14 @@
       <div class="hero-visual">
         <div class="demo-card">
           <div class="demo-header">
-            <div class="demo-avatar">👤</div>
+            <div class="demo-avatar"><i data-lucide="user" class="icon-md icon-white" aria-hidden="true"></i></div>
             <div class="demo-header-text">
               <div class="demo-name">Mohammad Yusuf, Ganderbal</div>
               <div class="demo-sub">Speaking in Kashmiri — Now</div>
             </div>
           </div>
           <div class="voice-wave">
-            <span class="wave-icon">🎙️</span>
+            <span class="wave-icon"><i data-lucide="mic" class="icon-xl icon-saffron" aria-hidden="true"></i></span>
             <div class="wave-bars">
               <div class="wave-bar" style="--h:8px; --delay:0s; --d:0.6s"></div>
               <div class="wave-bar" style="--h:20px; --delay:0.1s; --d:0.7s"></div>
@@ -93,28 +118,48 @@
           </div>
           <div class="processing-steps">
             <div class="proc-step">
-              <div class="proc-icon orange">🔍</div>
-              <div class="proc-label">Step 1: 🔍 Issue Identified →</div>
+              <div class="proc-icon-slot">
+                <span class="icon-circle icon-circle-saffron"><i data-lucide="mic" class="icon-md" aria-hidden="true"></i></span>
+              </div>
+              <div class="proc-label">
+                Step 1: Issue Identified <i data-lucide="arrow-right" class="icon-sm" aria-hidden="true"></i>
+              </div>
               <div class="proc-val">Water Supply Failure</div>
             </div>
             <div class="proc-step">
-              <div class="proc-icon green">🏛️</div>
-              <div class="proc-label">Step 2: 🏛️ Department Found →</div>
+              <div class="proc-icon-slot">
+                <span class="icon-circle icon-circle-saffron"><i data-lucide="cpu" class="icon-md" aria-hidden="true"></i></span>
+              </div>
+              <div class="proc-label">
+                Step 2: Department Found <i data-lucide="arrow-right" class="icon-sm" aria-hidden="true"></i>
+              </div>
               <div class="proc-val">Jal Shakti — Srinagar</div>
             </div>
             <div class="proc-step">
-              <div class="proc-icon orange">📋</div>
-              <div class="proc-label">Step 3: 📋 Letter Generated →</div>
+              <div class="proc-icon-slot">
+                <span class="icon-circle icon-circle-gold"><i data-lucide="file-text" class="icon-md" aria-hidden="true"></i></span>
+              </div>
+              <div class="proc-label">
+                Step 3: Letter Generated <i data-lucide="arrow-right" class="icon-sm" aria-hidden="true"></i>
+              </div>
               <div class="proc-val">Urdu + English</div>
             </div>
             <div class="proc-step">
-              <div class="proc-icon green">📍</div>
-              <div class="proc-label">Step 4: 📍 Submit To →</div>
+              <div class="proc-icon-slot">
+                <span class="icon-circle icon-circle-emerald"><i data-lucide="map-pin" class="icon-md" aria-hidden="true"></i></span>
+              </div>
+              <div class="proc-label">
+                Step 4: Submit To <i data-lucide="arrow-right" class="icon-sm" aria-hidden="true"></i>
+              </div>
               <div class="proc-val">jaldoot.gov.in</div>
             </div>
             <div class="proc-step">
-              <div class="proc-icon orange">⏰</div>
-              <div class="proc-label">Step 5: ⏰ Follow-up Set →</div>
+              <div class="proc-icon-slot">
+                <span class="icon-circle icon-circle-emerald"><i data-lucide="clock" class="icon-md" aria-hidden="true"></i></span>
+              </div>
+              <div class="proc-label">
+                Step 5: Follow-up Set <i data-lucide="arrow-right" class="icon-sm" aria-hidden="true"></i>
+              </div>
               <div class="proc-val">7 days reminder</div>
             </div>
           </div>
@@ -123,7 +168,9 @@
               <div class="tracking-id">AWZ-2026-00847</div>
               <div class="tracking-sub">Complaint filed & tracked</div>
             </div>
-            <div class="tracking-check">✓</div>
+            <div class="tracking-check">
+              <i data-lucide="check-circle" class="icon-lg" style="color: #fdfcfa; stroke: #fdfcfa" aria-hidden="true"></i>
+            </div>
           </div>
         </div>
       </div>
@@ -160,42 +207,42 @@
         <div class="flow-grid">
           <div class="flow-step">
             <div class="flow-num">01</div>
-            <div class="flow-icon">🎙️</div>
+            <div class="flow-icon"><i data-lucide="mic" class="icon-xl icon-saffron icon-glow" aria-hidden="true"></i></div>
             <div class="flow-title">Speak freely</div>
             <div class="flow-desc">In Kashmiri, Urdu, or Hindi. No forms, no typing required.</div>
-            <div class="flow-arrow">→</div>
+            <div class="flow-arrow"><i data-lucide="arrow-right" class="icon-sm" aria-hidden="true"></i></div>
           </div>
           <div class="flow-step">
             <div class="flow-num">02</div>
-            <div class="flow-icon">🧠</div>
+            <div class="flow-icon"><i data-lucide="cpu" class="icon-xl icon-saffron icon-glow" aria-hidden="true"></i></div>
             <div class="flow-title">AI transcribes</div>
             <div class="flow-desc">Your voice is turned into text in the browser (Web Speech API) — or type instead.</div>
-            <div class="flow-arrow">→</div>
+            <div class="flow-arrow"><i data-lucide="arrow-right" class="icon-sm" aria-hidden="true"></i></div>
           </div>
           <div class="flow-step">
             <div class="flow-num">03</div>
-            <div class="flow-icon">🔍</div>
+            <div class="flow-icon"><i data-lucide="search" class="icon-xl icon-gold icon-glow" aria-hidden="true"></i></div>
             <div class="flow-title">Issue classified</div>
             <div class="flow-desc">Gemini identifies issue type, severity, and the correct government department.</div>
-            <div class="flow-arrow">→</div>
+            <div class="flow-arrow"><i data-lucide="arrow-right" class="icon-sm" aria-hidden="true"></i></div>
           </div>
           <div class="flow-step">
             <div class="flow-num">04</div>
-            <div class="flow-icon">📋</div>
+            <div class="flow-icon"><i data-lucide="file-text" class="icon-xl icon-emerald icon-glow" aria-hidden="true"></i></div>
             <div class="flow-title">Letter generated</div>
             <div class="flow-desc">A formal legal complaint drafted in Urdu AND English, citing relevant laws.</div>
-            <div class="flow-arrow">→</div>
+            <div class="flow-arrow"><i data-lucide="arrow-right" class="icon-sm" aria-hidden="true"></i></div>
           </div>
           <div class="flow-step">
             <div class="flow-num">05</div>
-            <div class="flow-icon">📬</div>
+            <div class="flow-icon"><i data-lucide="send" class="icon-xl icon-emerald icon-glow" aria-hidden="true"></i></div>
             <div class="flow-title">Submit & track</div>
             <div class="flow-desc">Unique tracking ID assigned. You're told exactly where and how to submit.</div>
-            <div class="flow-arrow">→</div>
+            <div class="flow-arrow"><i data-lucide="arrow-right" class="icon-sm" aria-hidden="true"></i></div>
           </div>
           <div class="flow-step">
             <div class="flow-num">06</div>
-            <div class="flow-icon">🔔</div>
+            <div class="flow-icon"><i data-lucide="bell" class="icon-xl icon-saffron icon-glow" aria-hidden="true"></i></div>
             <div class="flow-title">Automated follow-up</div>
             <div class="flow-desc">7-day reminders. Anonymous. Safe. Zero technical knowledge needed.</div>
           </div>
@@ -220,6 +267,24 @@
               <div class="demo-dot dot-green"></div>
             </div>
             <div class="demo-toolbar-title">awaaz-ai.in/complaint — Secure & Anonymous</div>
+          </div>
+          <div class="trust-strip">
+            <span class="trust-item">
+              <i data-lucide="lock" class="icon-sm icon-emerald" aria-hidden="true"></i>
+              Anonymous — No login required
+            </span>
+            <span class="trust-item">
+              <i data-lucide="shield" class="icon-sm icon-emerald" aria-hidden="true"></i>
+              No Aadhaar. No personal data stored
+            </span>
+            <span class="trust-item">
+              <i data-lucide="eye-off" class="icon-sm icon-emerald" aria-hidden="true"></i>
+              Session ID only — never linked to identity
+            </span>
+            <span class="trust-item">
+              <i data-lucide="server" class="icon-sm icon-emerald" aria-hidden="true"></i>
+              Rate limited & security hardened
+            </span>
           </div>
           <div class="demo-body">
             <div class="demo-cols">
@@ -253,7 +318,7 @@
 
                 <div class="voice-row" id="voiceSpeechRow">
                   <button type="button" class="mic-btn" id="micBtn" aria-pressed="false" aria-label="Speak your complaint">
-                    🎙️
+                    <i data-lucide="mic" class="icon-xl icon-white" aria-hidden="true"></i>
                   </button>
                   <p class="voice-status" id="voiceStatus">Loading voice…</p>
                 </div>
@@ -268,22 +333,33 @@
                 </div>
 
                 <div class="sample-btns">
-                  <button type="button" class="sample-btn" data-sample="road">🛣️ Broken Road</button>
-                  <button type="button" class="sample-btn" data-sample="water">💧 Water Supply</button>
-                  <button type="button" class="sample-btn" data-sample="school">🏫 School Corruption</button>
-                  <button type="button" class="sample-btn" data-sample="ration">🌾 Ration Shop</button>
+                  <button type="button" class="sample-btn" data-sample="road">
+                    <i data-lucide="route" class="icon-sm" aria-hidden="true"></i> Broken Road
+                  </button>
+                  <button type="button" class="sample-btn" data-sample="water">
+                    <i data-lucide="droplets" class="icon-sm" aria-hidden="true"></i> Water Supply
+                  </button>
+                  <button type="button" class="sample-btn" data-sample="school">
+                    <i data-lucide="school" class="icon-sm" aria-hidden="true"></i> School Corruption
+                  </button>
+                  <button type="button" class="sample-btn" data-sample="ration">
+                    <i data-lucide="wheat" class="icon-sm" aria-hidden="true"></i> Ration Shop
+                  </button>
                 </div>
 
                 <button type="button" class="analyze-btn" id="analyzeBtn">
-                  <span>🔍</span> Analyze & Generate Complaint
+                  <i data-lucide="search" class="icon-md icon-white" aria-hidden="true"></i>
+                  Analyze & Generate Complaint
                 </button>
               </div>
 
               <div class="output-panel">
                 <div class="output-placeholder" id="outputPlaceholder">
-                  <div class="output-placeholder-icon">📋</div>
+                  <div class="output-placeholder-icon">
+                    <i data-lucide="file-text" class="icon-2xl icon-muted" aria-hidden="true"></i>
+                  </div>
                   <div>Your complaint analysis will appear here</div>
-                  <div style="font-size: 12px; color: var(--ink3)">AI-powered • Legal • Anonymous</div>
+                  <div class="output-placeholder-sub">AI-powered · Legal · Anonymous</div>
                 </div>
                 <div class="loading-overlay" id="loadingOverlay">
                   <div class="loading-spinner"></div>
@@ -293,7 +369,7 @@
                   <div class="result-header">
                     <div>
                       <div class="result-title" id="resultTitle">Complaint Analyzed</div>
-                      <div style="font-size: 12px; opacity: 0.8; margin-top: 2px" id="resultSub">Ready to submit</div>
+                      <div class="result-sub" id="resultSub">Ready to submit</div>
                     </div>
                     <div class="result-badge" id="resultBadge">NEW</div>
                   </div>
@@ -316,11 +392,11 @@
                     </div>
                     <div class="result-row">
                       <div class="result-key">Tracking ID</div>
-                      <div class="result-value" id="trackingId" style="font-family: monospace; color: var(--emerald); font-weight: 700">—</div>
+                      <div class="result-value tracking-id-value" id="trackingId">—</div>
                     </div>
                   </div>
 
-                  <div style="padding: 0 20px 20px">
+                  <div class="result-card-footer">
                     <div class="tab-row">
                       <button type="button" class="tab-btn active" id="tabEn">English Letter</button>
                       <button type="button" class="tab-btn" id="tabUr">اردو خط</button>
@@ -328,7 +404,9 @@
                     <div class="complaint-letter-box">
                       <div class="letter-header">
                         <div class="letter-title" id="letterLabel">Formal Complaint Letter (English)</div>
-                        <button type="button" class="copy-btn" id="copyLetterBtn">Copy</button>
+                        <button type="button" class="copy-btn" id="copyLetterBtn">
+                          <i data-lucide="copy" class="icon-sm" aria-hidden="true"></i> Copy
+                        </button>
                       </div>
                       <div class="letter-body" id="letterBody">—</div>
                     </div>
@@ -337,21 +415,15 @@
                         <div class="tracking-label">TRACKING ID</div>
                         <div class="tracking-id-main" id="trackingIdMain">—</div>
                       </div>
-                      <div class="checkmark">✓</div>
+                      <div class="checkmark">
+                        <i data-lucide="check-circle" class="icon-lg icon-emerald" aria-hidden="true"></i>
+                      </div>
                     </div>
                     <div class="result-actions">
-                      <a
-                        class="pdf-download-btn"
-                        id="pdfDownloadBtn"
-                        href="#"
-                        target="_blank"
-                        rel="noopener"
-                        style="display: none"
-                        >Download PDF</a
-                      >
-                      <a href="#" class="history-toggle-link" id="historyToggle" aria-expanded="false"
-                        >View My Previous Complaints</a
-                      >
+                      <a class="pdf-download-btn" id="pdfDownloadBtn" href="#" target="_blank" rel="noopener" style="display: none">
+                        <i data-lucide="file-down" class="icon-md" aria-hidden="true"></i> Download PDF
+                      </a>
+                      <a href="#" class="history-toggle-link" id="historyToggle" aria-expanded="false">View My Previous Complaints</a>
                       <a href="/dashboard" class="history-toggle-link">Open full dashboard</a>
                     </div>
                     <div class="history-panel" id="historyPanel" aria-live="polite">
@@ -375,36 +447,48 @@
         </p>
         <div class="impact-grid">
           <div class="impact-card saffron">
-            <div class="impact-icon">🗣️</div>
+            <div class="impact-icon">
+              <i data-lucide="message-circle" class="icon-xl icon-saffron icon-glow" aria-hidden="true"></i>
+            </div>
             <div class="impact-title">Language-first design</div>
             <div class="impact-desc">
               Works in Kashmiri, Urdu, and Hindi. No English required. No literacy assumptions. Truly for every villager.
             </div>
           </div>
           <div class="impact-card emerald">
-            <div class="impact-icon">🛡️</div>
+            <div class="impact-icon">
+              <i data-lucide="shield" class="icon-xl icon-emerald icon-glow" aria-hidden="true"></i>
+            </div>
             <div class="impact-title">Anonymous & safe</div>
             <div class="impact-desc">No Aadhaar login. No personal data. Complainants are protected. Fear is not a barrier anymore.</div>
           </div>
           <div class="impact-card gold">
-            <div class="impact-icon">📊</div>
+            <div class="impact-icon">
+              <i data-lucide="bar-chart-2" class="icon-xl icon-gold icon-glow" aria-hidden="true"></i>
+            </div>
             <div class="impact-title">Real-time corruption map</div>
             <div class="impact-desc">
               Every complaint builds an anonymized dataset — showing which districts, departments, and contracts fail most.
             </div>
           </div>
           <div class="impact-card crimson">
-            <div class="impact-icon">⚡</div>
+            <div class="impact-icon">
+              <i data-lucide="zap" class="icon-xl icon-saffron icon-glow" aria-hidden="true"></i>
+            </div>
             <div class="impact-title">10-second filing</div>
             <div class="impact-desc">From voice to legal complaint in 10 seconds. No forms, no bureaucracy, no waiting in queues.</div>
           </div>
           <div class="impact-card saffron">
-            <div class="impact-icon">🔔</div>
+            <div class="impact-icon">
+              <i data-lucide="bell" class="icon-xl icon-emerald icon-glow" aria-hidden="true"></i>
+            </div>
             <div class="impact-title">Automated follow-up</div>
             <div class="impact-desc">7-day reminders ensure nothing gets forgotten. The system chases the government, not the villager.</div>
           </div>
           <div class="impact-card emerald">
-            <div class="impact-icon">⚖️</div>
+            <div class="impact-icon">
+              <i data-lucide="scale" class="icon-xl icon-gold icon-glow" aria-hidden="true"></i>
+            </div>
             <div class="impact-title">Legal documentation</div>
             <div class="impact-desc">AI-generated letters cite the right laws, RTI provisions, and are formatted for official submission.</div>
           </div>
@@ -438,13 +522,15 @@
     <section class="cta-section" aria-label="Call to action">
       <h2>Your voice can change India.</h2>
       <p>6.4 lakh villages. One platform. Speak up.</p>
-      <button type="button" class="cta-btn">🎙️ File Your Complaint Now</button>
+      <button type="button" class="cta-btn">
+        <i data-lucide="mic" class="icon-md" aria-hidden="true"></i> File Your Complaint Now
+      </button>
     </section>
 
     <footer>
       <div class="footer-inner">
         <div class="footer-logo">
-          <div class="footer-logo-mark">🎙️</div>
+          <div class="footer-logo-mark"><i data-lucide="mic" class="icon-sm icon-white" aria-hidden="true"></i></div>
           <div>
             <div class="footer-name">Awaaz AI</div>
             <div class="footer-tagline">آواز — Voice of the Unheard</div>
@@ -456,7 +542,10 @@
           <a href="#">Partnerships</a>
           <a href="#">Contact</a>
         </div>
-        <div style="font-size: 12px">Built for India. Made in Kashmir. 🇮🇳</div>
+        <div class="footer-made-in">
+          <span>Built for India. Made in Kashmir.</span>
+          <i data-lucide="globe" class="icon-sm icon-saffron" aria-hidden="true"></i>
+        </div>
       </div>
     </footer>
 

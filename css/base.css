@@ -10,10 +10,16 @@ html {
   scroll-behavior: smooth;
 }
 
+* {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: 0.25s;
+  transition-timing-function: ease;
+}
+
 body {
   font-family: 'DM Sans', sans-serif;
-  background: var(--sand);
-  color: var(--ink);
+  background: var(--bg-primary);
+  color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
 }

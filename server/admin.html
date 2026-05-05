@@ -3,268 +3,40 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        var saved = localStorage.getItem('awaaz_theme');
+        var sys = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        var theme = saved || sys;
+        if (theme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
     <title>Awaaz AI — Admin</title>
+    <link rel="stylesheet" href="/css/variables.css" />
+    <link rel="stylesheet" href="/css/icons.css" />
+    <link rel="stylesheet" href="/css/admin.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <style>
-      :root {
-        --ink: #0e0c0a;
-        --ink2: #3a3530;
-        --ink3: #8a847c;
-        --saffron: #e8621a;
-        --emerald: #1a6e4a;
-        --gold: #d4a017;
-        --crimson: #b91c1c;
-        --surface: #1a1815;
-        --card: #232019;
-        --border: rgba(255, 255, 255, 0.08);
-      }
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        margin: 0;
-        font-family: 'DM Sans', sans-serif;
-        background: var(--ink);
-        color: #e8e4dc;
-        min-height: 100vh;
-      }
-      header {
-        background: linear-gradient(135deg, var(--saffron), #c24e12);
-        padding: 1.25rem 1.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 12px;
-      }
-      header h1 {
-        margin: 0;
-        font-size: 1.25rem;
-        font-weight: 700;
-      }
-      .token-row {
-        display: flex;
-        gap: 8px;
-        align-items: center;
-        flex-wrap: wrap;
-      }
-      .token-row input {
-        padding: 8px 12px;
-        border-radius: 8px;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        background: rgba(0, 0, 0, 0.2);
-        color: #fff;
-        min-width: 200px;
-      }
-      .token-row button {
-        padding: 8px 14px;
-        border-radius: 8px;
-        border: none;
-        background: #fff;
-        color: var(--saffron);
-        font-weight: 600;
-        cursor: pointer;
-      }
-      main {
-        padding: 1.5rem;
-        max-width: 1400px;
-        margin: 0 auto;
-      }
-      .metrics {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 12px;
-        margin-bottom: 1.5rem;
-      }
-      .metric {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 1rem;
-      }
-      .metric .label {
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: var(--ink3);
-      }
-      .metric .val {
-        font-size: 1.5rem;
-        font-weight: 700;
-        margin-top: 4px;
-      }
-      .metric.emerald .val {
-        color: #4ade80;
-      }
-      .metric.saffron .val {
-        color: #fb923c;
-      }
-      .metric.gold .val {
-        color: #facc15;
-      }
-      .filters {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 1rem;
-        align-items: flex-end;
-      }
-      .filters label {
-        font-size: 11px;
-        color: var(--ink3);
-        display: block;
-        margin-bottom: 4px;
-      }
-      .filters input,
-      .filters select {
-        padding: 8px 10px;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-        background: var(--surface);
-        color: #e8e4dc;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 13px;
-        background: var(--card);
-        border-radius: 12px;
-        overflow: hidden;
-        border: 1px solid var(--border);
-      }
-      th,
-      td {
-        padding: 10px 12px;
-        text-align: left;
-        border-bottom: 1px solid var(--border);
-      }
-      th {
-        background: var(--surface);
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        color: var(--ink3);
-      }
-      tr:hover td {
-        background: rgba(255, 255, 255, 0.02);
-      }
-      .badge {
-        display: inline-block;
-        padding: 2px 8px;
-        border-radius: 100px;
-        font-size: 10px;
-        font-weight: 600;
-        text-transform: uppercase;
-      }
-      .badge.critical {
-        background: rgba(185, 28, 28, 0.25);
-        color: #fca5a5;
-      }
-      .badge.high {
-        background: rgba(232, 98, 26, 0.2);
-        color: #fdba74;
-      }
-      .badge.medium {
-        background: rgba(212, 160, 23, 0.2);
-        color: #fde047;
-      }
-      .badge.low {
-        background: rgba(26, 110, 74, 0.25);
-        color: #86efac;
-      }
-      .tid {
-        color: #4ade80;
-        font-family: monospace;
-        font-weight: 700;
-        cursor: pointer;
-        text-decoration: underline;
-      }
-      .pager {
-        display: flex;
-        gap: 12px;
-        align-items: center;
-        margin-top: 1rem;
-        font-size: 13px;
-        color: var(--ink3);
-      }
-      .pager button {
-        padding: 8px 14px;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-        background: var(--surface);
-        color: #e8e4dc;
-        cursor: pointer;
-      }
-      .pager button:disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
-      }
-      .modal-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.65);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 100;
-        padding: 1rem;
-      }
-      .modal-overlay.open {
-        display: flex;
-      }
-      .modal {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        max-width: 720px;
-        width: 100%;
-        max-height: 90vh;
-        overflow: auto;
-        padding: 1.25rem;
-      }
-      .modal h2 {
-        margin: 0 0 1rem;
-        font-size: 1.1rem;
-      }
-      .modal pre {
-        white-space: pre-wrap;
-        font-size: 12px;
-        line-height: 1.5;
-        background: var(--surface);
-        padding: 12px;
-        border-radius: 8px;
-        max-height: 200px;
-        overflow: auto;
-      }
-      .modal-close {
-        float: right;
-        background: transparent;
-        border: none;
-        color: var(--ink3);
-        font-size: 1.25rem;
-        cursor: pointer;
-      }
-      a.small {
-        color: #fb923c;
-        font-size: 12px;
-      }
-      .danger {
-        color: #f87171;
-        background: transparent;
-        border: 1px solid rgba(248, 113, 113, 0.4);
-        padding: 4px 10px;
-        border-radius: 6px;
-        cursor: pointer;
-        font-size: 12px;
-      }
-    </style>
   </head>
   <body>
-    <header>
-      <h1>Awaaz AI Admin</h1>
+    <header class="admin-header-inner">
+      <div class="admin-header-left">
+        <h1>Awaaz AI Admin</h1>
+        <button
+          type="button"
+          class="theme-toggle"
+          id="themeToggle"
+          aria-label="Toggle dark and light mode"
+          title="Toggle theme"
+        >
+          <i data-lucide="moon" class="icon-md theme-icon-dark" aria-hidden="true"></i>
+          <i data-lucide="sun" class="icon-md theme-icon-light" aria-hidden="true"></i>
+        </button>
+      </div>
       <div class="token-row">
         <input type="password" id="adminToken" placeholder="ADMIN_TOKEN (Bearer)" autocomplete="off" />
         <button type="button" id="saveToken">Save</button>
@@ -340,17 +112,66 @@
     </main>
     <div class="modal-overlay" id="modal" role="dialog" aria-modal="true">
       <div class="modal">
-        <button type="button" class="modal-close" id="modalClose" aria-label="Close">&times;</button>
-        <h2 id="modalTitle">Complaint</h2>
+        <div class="modal-header">
+          <h2 id="modalTitle">Complaint</h2>
+          <button type="button" class="modal-close" id="modalClose" aria-label="Close">
+            <i data-lucide="x" class="icon-md" aria-hidden="true"></i>
+          </button>
+        </div>
         <div id="modalBody"></div>
       </div>
     </div>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script>
+      (function () {
+        var THEME_KEY = 'awaaz_theme';
+        var DARK = 'dark';
+        var LIGHT = 'light';
+        function getSavedTheme() {
+          return localStorage.getItem(THEME_KEY);
+        }
+        function getSystemTheme() {
+          return window.matchMedia('(prefers-color-scheme: light)').matches ? LIGHT : DARK;
+        }
+        function refreshLucide() {
+          var L = window.lucide;
+          if (L && typeof L.createIcons === 'function') L.createIcons();
+        }
+        function applyTheme(theme, persist) {
+          var html = document.documentElement;
+          if (theme === LIGHT) html.setAttribute('data-theme', 'light');
+          else html.removeAttribute('data-theme');
+          if (persist) localStorage.setItem(THEME_KEY, theme);
+          refreshLucide();
+        }
+        function initTheme() {
+          var saved = getSavedTheme();
+          var initial = saved || getSystemTheme();
+          applyTheme(initial, Boolean(saved));
+          document.getElementById('themeToggle')?.addEventListener('click', function () {
+            var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            applyTheme(isLight ? DARK : LIGHT, true);
+          });
+          window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function (e) {
+            if (getSavedTheme()) return;
+            applyTheme(e.matches ? LIGHT : DARK, false);
+          });
+        }
+        initTheme();
+        refreshLucide();
+      })();
+    </script>
     <script>
       (function () {
         const TOKEN_KEY = 'awaaz_admin_token';
         let offset = 0;
         const limit = 20;
         let total = 0;
+
+        function refreshLucide() {
+          var L = window.lucide;
+          if (L && typeof L.createIcons === 'function') L.createIcons();
+        }
 
         function token() {
           return sessionStorage.getItem(TOKEN_KEY) || document.getElementById('adminToken').value.trim();
@@ -385,6 +206,7 @@
                 `<div class="metric ${cls}"><div class="label">${label}</div><div class="val">${val ?? '—'}</div></div>`
             )
             .join('');
+          refreshLucide();
         }
 
         function sevClass(sev) {
@@ -413,10 +235,12 @@
           if (r.status === 401) {
             document.getElementById('tbody').innerHTML =
               '<tr><td colspan="8">Unauthorized — set ADMIN_TOKEN and save.</td></tr>';
+            refreshLucide();
             return;
           }
           if (!r.ok) {
             document.getElementById('tbody').innerHTML = '<tr><td colspan="8">Failed to load.</td></tr>';
+            refreshLucide();
             return;
           }
           const data = await r.json();
@@ -439,7 +263,7 @@
                   .join('')}
               </select></td>
               <td>${escapeHtml((row.createdAt || '').slice(0, 10))}</td>
-              <td><a class="small" href="${pdf}" target="_blank">PDF</a>
+              <td><a class="small" href="${pdf}" target="_blank"><i data-lucide="file-down" class="icon-sm" aria-hidden="true"></i> PDF</a>
               <button type="button" class="danger" data-del="${tid}">Delete</button></td>
             </tr>`;
             })
@@ -477,6 +301,7 @@
               if (r.ok) loadAll();
             });
           });
+          refreshLucide();
         }
 
         function escapeHtml(s) {
@@ -503,6 +328,7 @@
             <p><strong>English letter</strong></p><pre>${escapeHtml(a.english_letter)}</pre>
             <p><strong>Urdu letter</strong></p><pre>${escapeHtml(a.urdu_letter)}</pre>`;
           document.getElementById('modal').classList.add('open');
+          refreshLucide();
         }
 
         function closeModal() {

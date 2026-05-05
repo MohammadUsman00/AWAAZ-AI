@@ -2,7 +2,7 @@ nav {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(245, 240, 232, 0.9);
+  background: var(--bg-nav);
   backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
   padding: 0 clamp(1rem, 4vw, 3rem);
@@ -17,7 +17,7 @@ nav {
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  color: var(--ink);
+  color: var(--text-primary);
 }
 
 .logo-mark {
@@ -37,7 +37,7 @@ nav {
   position: absolute;
   width: 18px;
   height: 18px;
-  border: 2.5px solid rgba(255, 255, 255, 0.9);
+  border: 2.5px solid var(--logo-mark-ring);
   border-radius: 50%;
   border-right-color: transparent;
   animation: spin 2s linear infinite;
@@ -59,14 +59,14 @@ nav {
 
 .nav-links {
   display: flex;
-  gap: 2rem;
+  gap: 1.25rem;
   align-items: center;
 }
 
 .nav-links a {
   font-size: 14px;
   font-weight: 500;
-  color: var(--ink2);
+  color: var(--text-muted);
   text-decoration: none;
   transition: color 0.2s;
 }
@@ -76,8 +76,8 @@ nav {
 }
 
 .nav-cta {
-  background: var(--ink);
-  color: var(--white) !important;
+  background: var(--text-primary);
+  color: var(--bg-primary) !important;
   padding: 8px 20px;
   border-radius: 100px;
   font-size: 13px !important;
@@ -88,6 +88,7 @@ nav {
 
 .nav-cta:hover {
   background: var(--saffron) !important;
+  color: #fdfcfa !important;
   transform: scale(1.02);
 }
 
@@ -97,7 +98,7 @@ nav {
   height: 44px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  background: var(--white);
+  background: var(--nav-toggle-bg);
   cursor: pointer;
   align-items: center;
   justify-content: center;
@@ -110,7 +111,7 @@ nav {
   display: block;
   width: 20px;
   height: 2px;
-  background: var(--ink);
+  background: var(--text-primary);
   border-radius: 1px;
   transition: transform 0.2s;
 }
@@ -125,7 +126,7 @@ nav {
     top: 64px;
     left: 0;
     right: 0;
-    background: rgba(245, 240, 232, 0.97);
+    background: var(--bg-nav);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border);
     padding: 1rem 1.5rem 1.25rem;
@@ -147,5 +148,10 @@ nav {
 
   .nav-links a:last-child {
     border-bottom: none;
+  }
+
+  .nav-links .theme-toggle {
+    align-self: center;
+    margin: 0.25rem 0;
   }
 }

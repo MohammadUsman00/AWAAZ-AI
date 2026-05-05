@@ -4,7 +4,8 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--sand);
+  background: var(--bg-primary);
+  color: var(--text-primary);
 }
 
 .dashboard-main {
@@ -36,19 +37,19 @@
   font-family: 'Playfair Display', serif;
   font-size: clamp(1.5rem, 4vw, 2rem);
   margin: 0 0 0.5rem;
-  color: var(--ink);
+  color: var(--text-primary);
 }
 
 .dashboard-desc {
   margin: 0;
   max-width: 520px;
   font-size: 14px;
-  color: var(--ink3);
+  color: var(--text-muted);
   line-height: 1.55;
 }
 
 .dashboard-session {
-  background: var(--white);
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px 16px;
@@ -58,7 +59,7 @@
 .dashboard-session-label {
   display: block;
   font-size: 11px;
-  color: var(--ink3);
+  color: var(--text-muted);
   margin-bottom: 6px;
 }
 
@@ -78,6 +79,10 @@
   background: var(--sand2);
   cursor: pointer;
   font-family: 'DM Sans', sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-primary);
 }
 
 .dashboard-copy-btn:hover {
@@ -98,7 +103,7 @@
 }
 
 .dashboard-metric {
-  background: var(--white);
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 14px 16px;
@@ -108,13 +113,13 @@
 .dashboard-metric-val {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--ink);
+  color: var(--text-primary);
   font-variant-numeric: tabular-nums;
 }
 
 .dashboard-metric-label {
   font-size: 11px;
-  color: var(--ink3);
+  color: var(--text-muted);
   margin-top: 4px;
 }
 
@@ -128,7 +133,7 @@
 
 .dashboard-filter-label {
   font-size: 12px;
-  color: var(--ink3);
+  color: var(--text-muted);
 }
 
 .dashboard-filter {
@@ -137,15 +142,16 @@
   border: 1px solid var(--border);
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
-  background: var(--white);
+  background: var(--bg-card);
+  color: var(--text-primary);
 }
 
 .dashboard-refresh {
   padding: 8px 14px;
   border-radius: var(--radius-sm);
-  border: 1px solid var(--ink);
-  background: var(--ink);
-  color: var(--white);
+  border: 1px solid var(--saffron);
+  background: var(--saffron);
+  color: var(--text-on-emerald);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -160,7 +166,7 @@
 .dashboard-error {
   padding: 1.5rem;
   text-align: center;
-  color: var(--ink3);
+  color: var(--text-muted);
   font-size: 14px;
 }
 
@@ -173,14 +179,14 @@
 .dashboard-empty {
   text-align: center;
   padding: 3rem 1.5rem;
-  background: var(--sand2);
+  background: var(--section-alt-bg);
   border-radius: var(--radius);
   border: 1px dashed var(--border);
 }
 
 .dashboard-empty p {
   margin: 0 0 1rem;
-  color: var(--ink3);
+  color: var(--text-muted);
 }
 
 .dashboard-cta {
@@ -192,7 +198,7 @@
   overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: var(--white);
+  background: var(--bg-card);
 }
 
 .dashboard-table {
@@ -212,8 +218,8 @@
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--ink3);
-  background: var(--sand2);
+  color: var(--text-muted);
+  background: var(--section-alt-bg);
 }
 
 .dashboard-table tr:last-child td {
@@ -230,6 +236,9 @@
   color: var(--saffron);
   font-weight: 600;
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .dashboard-pdf:hover {
@@ -242,8 +251,8 @@
   letter-spacing: 0.03em;
   padding: 3px 8px;
   border-radius: 100px;
-  background: var(--sand2);
-  color: var(--ink2);
+  background: var(--border2);
+  color: var(--text-primary);
 }
 
 .dash-sev {
@@ -274,7 +283,7 @@
 .dashboard-footer {
   margin-top: auto;
   border-top: 1px solid var(--border);
-  background: rgba(245, 240, 232, 0.95);
+  background: var(--footer-bg);
   padding: 1.25rem clamp(1rem, 4vw, 3rem);
 }
 
@@ -293,6 +302,9 @@
   font-weight: 500;
   color: var(--saffron);
   text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .dashboard-back-link:hover {

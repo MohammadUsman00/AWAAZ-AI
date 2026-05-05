@@ -3,8 +3,12 @@
  */
 import { API } from './config.js';
 import { getSessionId } from './session.js';
+import { initTheme } from './theme.js';
+import { refreshLucide } from './icons.js';
 
 let allItems = [];
+
+const COPY_BTN_HTML = '<i data-lucide="copy" class="icon-sm" aria-hidden="true"></i> Copy';
 
 function escapeHtml(s) {
   return String(s)
@@ -57,14 +61,16 @@ function renderTable(items) {
     if (allItems.length === 0) {
       tableWrap.hidden = true;
       empty.hidden = false;
+      refreshLucide();
       return;
     }
     empty.hidden = true;
     tableWrap.hidden = false;
     const tr = document.createElement('tr');
     tr.innerHTML =
-      '<td colspan="6" style="text-align:center;color:var(--ink3);padding:1.5rem">No complaints match this filter.</td>';
+      '<td colspan="6" style="text-align:center;color:var(--text-muted);padding:1.5rem">No complaints match this filter.</td>';
     tbody.appendChild(tr);
+    refreshLucide();
     return;
   }
   empty.hidden = true;
@@ -80,10 +86,11 @@ function renderTable(items) {
       <td><span class="${severityClass(row.severity)}">${escapeHtml((row.severity || '—').toString())}</span></td>
       <td><span class="dashboard-status-pill">${escapeHtml(row.status || 'filed')}</span></td>
       <td>${escapeHtml((row.createdAt || '').slice(0, 10))}</td>
-      <td><a class="dashboard-pdf" href="${pdf}" target="_blank" rel="noopener">PDF</a></td>
+      <td><a class="dashboard-pdf" href="${pdf}" target="_blank" rel="noopener"><i data-lucide="file-down" class="icon-sm" aria-hidden="true"></i> PDF</a></td>
     `;
     tbody.appendChild(tr);
   }
+  refreshLucide();
 }
 
 function applyFilter() {
@@ -130,6 +137,7 @@ async function loadComplaints() {
     document.getElementById('emptyState')?.setAttribute('hidden', '');
     document.getElementById('tableWrap')?.setAttribute('hidden', '');
   }
+  refreshLucide();
 }
 
 function initNav() {
@@ -142,6 +150,7 @@ function initNav() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
   initNav();
   document.getElementById('refreshBtn')?.addEventListener('click', () => loadComplaints());
   document.getElementById('statusFilter')?.addEventListener('change', () => applyFilter());
@@ -151,10 +160,11 @@ document.addEventListener('DOMContentLoaded', () => {
       await navigator.clipboard.writeText(sid);
       const btn = document.getElementById('copySessionBtn');
       if (btn) {
-        const prev = btn.textContent;
-        btn.textContent = 'Copied!';
+        btn.innerHTML = '<i data-lucide="copy" class="icon-sm" aria-hidden="true"></i> Copied!';
+        refreshLucide();
         setTimeout(() => {
-          btn.textContent = prev;
+          btn.innerHTML = COPY_BTN_HTML;
+          refreshLucide();
         }, 2000);
       }
     } catch {
@@ -162,4 +172,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
   loadComplaints();
+  refreshLucide();
 });

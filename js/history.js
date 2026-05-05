@@ -1,8 +1,9 @@
 import { API } from './config.js';
 import { getSessionId } from './session.js';
+import { refreshLucide } from './icons.js';
 
-export function setLastTrackingId() {
-  /* hook after successful analyze (e.g. highlight latest) */
+export function setLastTrackingId(_id) {
+  /* reserved for future UX (e.g. highlight latest in history) */
 }
 
 function escapeHtml(s) {
@@ -41,6 +42,7 @@ export async function toggleHistory() {
   if (!open) return;
 
   inner.innerHTML = '<div class="history-loading">Loading…</div>';
+  refreshLucide();
   try {
     const sid = getSessionId();
     const url = `${API.baseUrl}/api/session/complaints?sessionId=${encodeURIComponent(sid)}`;
@@ -50,6 +52,7 @@ export async function toggleHistory() {
     const items = data.items || [];
     if (!items.length) {
       inner.innerHTML = '<p class="history-empty">No previous complaints in this session</p>';
+      refreshLucide();
       return;
     }
     inner.innerHTML = items
@@ -70,8 +73,10 @@ export async function toggleHistory() {
         </div>`;
       })
       .join('');
+    refreshLucide();
   } catch {
     inner.innerHTML = '<p class="history-empty">Could not load complaints.</p>';
+    refreshLucide();
   }
 }
 

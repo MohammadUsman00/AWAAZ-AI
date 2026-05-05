@@ -3,6 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        var saved = localStorage.getItem('awaaz_theme');
+        var sys = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+        var theme = saved || sys;
+        if (theme === 'light') {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
     <title>My Dashboard — Awaaz AI</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap"
@@ -10,6 +20,7 @@
     />
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/dashboard.css" />
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
   </head>
   <body class="dashboard-body">
     <nav>
@@ -27,6 +38,16 @@
         <a href="/#how">How it works</a>
         <a href="/#demo">File a Complaint</a>
         <a href="/dashboard" class="nav-link-active" aria-current="page">My Dashboard</a>
+        <button
+          type="button"
+          class="theme-toggle"
+          id="themeToggle"
+          aria-label="Toggle dark and light mode"
+          title="Toggle theme"
+        >
+          <i data-lucide="moon" class="icon-md theme-icon-dark" aria-hidden="true"></i>
+          <i data-lucide="sun" class="icon-md theme-icon-light" aria-hidden="true"></i>
+        </button>
       </div>
     </nav>
 
@@ -42,7 +63,9 @@
         <div class="dashboard-session">
           <span class="dashboard-session-label">Session ID</span>
           <code class="dashboard-session-id" id="sessionIdDisplay">—</code>
-          <button type="button" class="dashboard-copy-btn" id="copySessionBtn">Copy</button>
+          <button type="button" class="dashboard-copy-btn" id="copySessionBtn">
+            <i data-lucide="copy" class="icon-sm" aria-hidden="true"></i> Copy
+          </button>
         </div>
       </div>
 
@@ -105,13 +128,17 @@
     <footer class="dashboard-footer">
       <div class="footer-inner">
         <div class="footer-logo">
-          <div class="footer-logo-mark">🎙️</div>
+          <div class="footer-logo-mark">
+            <i data-lucide="mic" class="icon-md icon-white" aria-hidden="true"></i>
+          </div>
           <div>
             <div class="footer-name">Awaaz AI</div>
             <div class="footer-tagline">آواز — Voice of the Unheard</div>
           </div>
         </div>
-        <a href="/" class="dashboard-back-link">← Back to home</a>
+        <a href="/" class="dashboard-back-link"
+          ><i data-lucide="arrow-left" class="icon-sm" aria-hidden="true"></i> Back to home</a
+        >
       </div>
     </footer>
 
